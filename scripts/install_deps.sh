@@ -9,7 +9,13 @@ PATH="$(printf %s "$PATH" | tr : '\n' | grep -v '/_tooling/bin/*$' | paste -sd: 
 export PATH
 cd "$(dirname "$0")/.."
 git submodule update --init --recursive
+# r[impl sdk.install-refuses-uncommitted-sdk]
+[ -z "$(git status --porcelain -- third-party/haptics-sdk)" ] || {
+  echo "install_deps: third-party/haptics-sdk holds changes this tree does not pin; commit and pin them, or restore them" >&2
+  exit 1
+}
 yarn install --frozen-lockfile
+# r[impl sdk.install-builds-the-pin]
 # yarn skips the native build whenever a binary exists, so whatever the pin check refuses needs the force.
 if ! bash scripts/check_sdk_pin.sh 2>/dev/null; then
   yarn native:update

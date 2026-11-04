@@ -23,7 +23,7 @@ commit main/src/a.ts
 commit .gitmodules
 git update-ref refs/remotes/upstream/main HEAD
 # origin/main is upstream/main plus what the copy changes, a path no pattern names included.
-for path in .gitmodules .gitignore .github/workflows/test.yml scripts/install_deps.sh scripts/later_tool.sh; do commit "$path"; done
+for path in .gitmodules .gitignore .github/workflows/test.yml scripts/install_deps.sh scripts/later_tool.sh 'scripts/é_tool.sh'; do commit "$path"; done
 git update-ref refs/remotes/origin/main HEAD
 M=r
 
@@ -34,9 +34,9 @@ test_code_only_branch_passes() {
   commit scripts/build_native.js
   commit main/test/docs/tests/c.ts
   mkdir -p main/src
-  echo 'dev_tooling /Users/other' > main/src/c2.ts
+  printf '%s\n' 'dev_tooling /Users/other' '// fixes CVE-2026-44492' '"above-2000"' '"move-2024"' > main/src/c2.ts
   git add -A
-  git commit -qm "near a private name"
+  git commit -qm "Bump axios to 0.32.0 for CVE-2026-44492"
   bash "$CHECK" clean >/dev/null || fail "a branch with only code changes was refused"
 }
 
@@ -46,7 +46,7 @@ test_each_layer_path_refused() {
   for path in CLAUDE.md main/CLAUDE.md .claude/STATUS.md main/.claude/settings.local.json \
     .config/tracey/config.styx .mcp.json .githooks/pre-push docs/a.md tests/a.sh .serena/project.yml \
     .gitignore .gitmodules .github/workflows/test.yml scripts/install_deps.sh scripts/later_tool.sh \
-    tmp/local_run.sh CLAUDE.local.md AGENTS.md Claude.md .Claude/x.md main/.mcp.json main/.serena/project.yml \
+    'scripts/é_tool.sh' tmp/local_run.sh CLAUDE.local.md AGENTS.md Claude.md .Claude/x.md main/.mcp.json main/.serena/project.yml \
     main/.githooks/pre-push main/.config/tracey/config.styx \
     '.claude/plans/é.md' 'docs/é.md' 'main/é/CLAUDE.md' '.claude/a"b.md'; do
     i=$((i + 1))
@@ -103,7 +103,7 @@ test_branch_from_origin_main_refused() {
   refused_naming topic CLAUDE.md
 }
 
-# r[verify upstream.check-refuses-private-name+2]
+# r[verify upstream.check-refuses-private-name+3]
 test_private_name_in_a_changed_line_refused() {
   git switch -qc named-line upstream/main
   mkdir -p main/src
@@ -113,14 +113,14 @@ test_private_name_in_a_changed_line_refused() {
   refused_naming named-line 'basslet/haptics-sdk'
 }
 
-# r[verify upstream.check-refuses-private-name+2]
+# r[verify upstream.check-refuses-private-name+3]
 test_private_name_in_a_message_refused() {
   git switch -qc named-message upstream/main
   commit main/src/h.ts 'taken from basslet/haptics-sdk'
   refused_naming named-message 'basslet/haptics-sdk'
 }
 
-# r[verify upstream.check-refuses-private-name+2]
+# r[verify upstream.check-refuses-private-name+3]
 test_each_private_text_refused() {
   local text i=0
   for text in 'github.com/Basslet/x' '@basslet' 'see _tooling/bin/tracey-gate' 'DEBT-2026-11-04-no-public-fork' \
@@ -136,7 +136,7 @@ test_each_private_text_refused() {
   done
 }
 
-# r[verify upstream.check-refuses-private-name+2]
+# r[verify upstream.check-refuses-private-name+3]
 test_private_name_git_or_grep_would_hide_refused() {
   mkdir -p main/src
   git switch -qc in-binary upstream/main
@@ -157,6 +157,19 @@ test_private_name_git_or_grep_would_hide_refused() {
   git add -A
   git commit -qm code
   refused_naming in-latin1 'basslet/x'
+}
+
+# r[verify upstream.check-refuses-private-name+3]
+test_private_name_only_in_a_merge_commit_refused() {
+  git switch -qc name-merge-side upstream/main
+  commit main/src/n.ts
+  git switch -qc name-merged upstream/main
+  commit main/src/o.ts
+  git merge -q --no-commit --no-ff name-merge-side >/dev/null
+  echo 'see basslet/x' > main/src/p.ts
+  git add -A
+  git commit -qm "merge side"
+  refused_naming name-merged 'basslet/x'
 }
 
 test_unknown_branch_refused() {
@@ -196,6 +209,7 @@ test_private_name_in_a_changed_line_refused
 test_private_name_in_a_message_refused
 test_each_private_text_refused
 test_private_name_git_or_grep_would_hide_refused
+test_private_name_only_in_a_merge_commit_refused
 test_unknown_branch_refused
 test_no_origin_main_refused
 test_scan_git_cannot_finish_refused

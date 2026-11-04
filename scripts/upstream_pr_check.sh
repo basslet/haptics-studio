@@ -11,11 +11,12 @@ export LC_ALL=C   # a non-UTF-8 byte must not hide a line from grep
 # Paths a tool writes whether or not origin/main holds them yet, at any depth and in any case.
 # What origin/main itself adds or changes is read from git.
 LAYER='(^|/)(CLAUDE|CLAUDE\.local|AGENTS)\.md$|(^|/)\.(claude|serena|githooks)/|(^|/)\.config/tracey/|(^|/)\.mcp\.json$|^(docs|tests|tmp)/|^third-party/haptics-sdk$'
-PRIVATE='basslet|(^|[^[:alnum:]])_tooling|/Users/dbu|gitty-healer|(DEBT|VE)-20[0-9]|r\[(impl|verify) '
+# The left edge keeps Meta's dev_tooling and CVE-2026-... clear.
+PRIVATE='basslet|/Users/dbu|gitty-healer|(^|[^[:alnum:]])(_tooling|(DEBT|VE)-20[0-9])|r\[(impl|verify) '
 
 # r[impl upstream.check-passes-clean+2]
 # r[impl upstream.check-refuses-layer]
-# r[impl upstream.check-refuses-private-name+2]
+# r[impl upstream.check-refuses-private-name+3]
 check() {
   local files copy hits named
   files="$(git log -z --diff-merges=first-parent --no-renames --format= --name-only "upstream/main..$1" -- | tr '\0' '\n')"

@@ -13,5 +13,6 @@ esac
 pin="$(git rev-parse HEAD:third-party/haptics-sdk)"
 [ "$(cat native/bin/.sdk-commit 2>/dev/null || true)" = "$pin" ] || refuse "the native SDK was not built from the pinned commit"
 # r[impl sdk.suite-refuses-rebuilt-binary]
+# shortcut: one of the two binaries missing passes here, because Jest stops on it with "Could not locate module"; split the test if a suite ever loads the other one.
 [ -n "$(find native/bin -name HapticsSDK.node)" ] || refuse "there is no native SDK binary"
 [ -z "$(find native/bin -name HapticsSDK.node -newer native/bin/.sdk-commit)" ] || refuse "a native SDK binary is newer than the stamp"

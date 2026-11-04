@@ -21,9 +21,10 @@ The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, t
 | 2026-11-04 | The token lists both private repos with Contents read-only | operator |
 | 2026-11-04 | CI's checkout does not leave the token in `.git/config` | agent |
 | 2026-11-04 | The upstream check reads what `origin/main` changes from git, plus a list of tool paths at any depth and in any case | agent |
-| 2026-11-04 | It refuses our accounts, `_tooling`, this host's home, register IDs and tracey markers; none is in Meta's tree | agent |
+| 2026-11-04 | It refuses our accounts, `_tooling`, this host's home, register IDs and tracey markers; no commit in Meta's history at `88565a8` matches | agent |
 | 2026-11-04 | It stays a manual check until a public fork exists; a merge of newer Meta code touching a refused path stays refused, so rebase | agent |
 | 2026-11-04 | The suite refuses a missing native binary or one newer than its stamp, as its own requirement | agent |
+| 2026-11-04 | `install_deps.sh` refuses an SDK tree with changes this tree does not pin, so the stamp stays true | agent |
 | 2026-11-04 | Pushes to PR #1 are grouped, because each spends paid CI minutes | agent |
 
 ## In flight
