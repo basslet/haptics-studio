@@ -24,7 +24,7 @@ The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, t
 | 2026-11-04 | It refuses our accounts, `_tooling`, this host's home, register IDs and tracey markers; no commit in Meta's history at `88565a8` matches | agent |
 | 2026-11-04 | It stays a manual check until a public fork exists; a merge of newer Meta code touching a refused path stays refused, so rebase | agent |
 | 2026-11-04 | The suite refuses a missing native binary or one newer than its stamp, as its own requirement | agent |
-| 2026-11-04 | `install_deps.sh` refuses an SDK tree with changes this tree does not pin, so the stamp stays true | agent |
+| 2026-11-04 | `install_deps.sh` refuses an SDK tree with changes this tree does not pin, before `yarn` and after it; a git-ignored file gets through (`DEBT-2026-11-04-install-guard-ignored-sdk-files`) | agent |
 | 2026-11-04 | Pushes to PR #1 are grouped, because each spends paid CI minutes | agent |
 | 2026-11-04 | Outside review through OpenRouter is allowed for this repo and `basslet/haptics-sdk`; it applies once PR #1 is on the base branch | operator |
 | 2026-11-04 | The operator reviews and merges this repo's PRs | operator |

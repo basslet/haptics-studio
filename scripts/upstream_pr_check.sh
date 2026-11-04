@@ -6,6 +6,7 @@
 # Exit: 0 clean, 1 refused, 2 usage; a git failure (unknown branch, no upstream or origin remote) exits non-zero.
 # shortcut: a merge of newer upstream/main that touches a refused path is refused too; rebase the branch.
 # shortcut: an honest change for Meta to the SDK pointer or to a file this copy edits is refused too; read that diff by hand, and narrow the list when the first one is bound for Meta.
+# shortcut: a patch's unchanged context lines are scanned too, so a private word in Meta's own text would refuse a clean branch; Meta's history held none at 88565a8, so scan only + and - lines when one appears.
 set -euo pipefail
 export LC_ALL=C   # a non-UTF-8 byte must not hide a line from grep
 
@@ -33,7 +34,7 @@ check() {
   # any other failure, git's included, stops the script.
   named="$(git log -p --text --diff-merges=first-parent --format=%B "upstream/main..$1" -- | tr -d '\0' | { grep -iE "$PRIVATE" || [ $? -eq 1 ]; })"
   if [ -n "$named" ]; then
-    echo "upstream_pr_check: $1 carries private text in a commit message or a changed line:" >&2
+    echo "upstream_pr_check: $1 carries private text in a commit message or a patch:" >&2
     printf '  %s\n' "$named" >&2
     exit 1
   fi

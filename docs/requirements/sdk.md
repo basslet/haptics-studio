@@ -19,3 +19,8 @@ r[sdk.install-refuses-uncommitted-sdk]
 `scripts/install_deps.sh` shall exit non-zero, without running `yarn` or moving the stamp, when `third-party/haptics-sdk` holds an edit, an untracked file or a staged pointer.
 
 The stamp names the pinned commit, so a binary built from anything else would pass the pin check once the tree is restored.
+
+r[sdk.install-refuses-sdk-changed-by-yarn]
+`scripts/install_deps.sh` shall exit non-zero, without moving the stamp, when `yarn install` or the native build leaves an edit, an untracked file or a staged pointer in `third-party/haptics-sdk`.
+
+A dependency's install script runs inside `yarn install`, after the first check has passed.
