@@ -1,5 +1,17 @@
 # Decisions — haptics-studio
 
+## 2026-11-04 — decision: outside review through OpenRouter is allowed for this repo
+
+- what: `.claude/context/build-lead.md` carries `outside-review: allowed`, so `pr-review` may send this repo's PR diffs to OpenRouter when Copilot fails, and `external_refute.sh` may send evidence from it.
+- why: the operator's decision, 2026-11-04, for this repo and `basslet/haptics-sdk`. `pr-review` reads the line from the base branch, so it applies once PR #1 has merged.
+- refs: `_tooling` `.claude/memory/decisions.md` "2026-11-01 — decision: `PR_REVIEWER=outside` does not override a repo's opt-in".
+
+## 2026-11-04 — decision: the operator reviews and merges this repo's PRs
+
+- what: agents prepare a PR and run its automated review; the operator reviews it and merges it.
+- why: the operator's decision, 2026-11-04, given while allowing agents to merge `_tooling` PRs in the same session.
+- refs: global rules, "Who decides".
+
 ## 2026-11-04 — decision: CI reads the private SDK with a read-only token in a repo secret
 
 - what: the checkout step of `.github/workflows/test.yml` passes `token: ${{ secrets.SDK_CHECKOUT_TOKEN }}`, a token the operator created and stored as an Actions secret.

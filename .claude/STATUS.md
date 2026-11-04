@@ -26,6 +26,8 @@ The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, t
 | 2026-11-04 | The suite refuses a missing native binary or one newer than its stamp, as its own requirement | agent |
 | 2026-11-04 | `install_deps.sh` refuses an SDK tree with changes this tree does not pin, so the stamp stays true | agent |
 | 2026-11-04 | Pushes to PR #1 are grouped, because each spends paid CI minutes | agent |
+| 2026-11-04 | Outside review through OpenRouter is allowed for this repo and `basslet/haptics-sdk`; it applies once PR #1 is on the base branch | operator |
+| 2026-11-04 | The operator reviews and merges this repo's PRs | operator |
 
 ## In flight
 
