@@ -47,3 +47,8 @@ main/flags.json
 native/bin
 
 main/src/types/haptics_sdk_types.ts
+
+# fork layer: agent tooling (CLAUDE.md "Fork model"). /tmp/ is root-anchored because main/test/tmp/ is tracked.
+/tmp/
+.claude/worktrees/
+.claude/runs/

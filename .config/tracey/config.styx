@@ -1,0 +1,18 @@
+// tracey 1.4.0 config, from _tooling templates/tracey/config.styx, changed for TypeScript:
+// the code globs name this repo's source trees and third-party/ is excluded.
+// Requirements: docs/requirements/<area>.md.
+// tracey scans hidden directories, so .claude (worktree copies) is excluded by name.
+specs (
+  {
+    name requirements
+    include (docs/requirements/**/*.md)
+    impls (
+      {
+        name code
+        include (main/src/**/*.ts main/src/**/*.tsx frontend/src/**/*.ts frontend/src/**/*.tsx shared/**/*.ts scripts/**/*.sh tests/**/*.sh)
+        exclude (node_modules/** .claude/** third-party/**)
+        test_include (tests/**/*.sh main/test/**/*.ts **/*.test.ts **/*.test.tsx)
+      }
+    )
+  }
+)

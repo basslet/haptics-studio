@@ -1,0 +1,40 @@
+#!/bin/sh
+# pre-push — refuse a push whose tip tree has no green local full-suite run.
+# From _tooling/templates/pre-push (pattern: captrader dbbeb2f, 2026-10-03).
+#
+# Install once per clone, never with --global:
+#     mkdir -p .githooks
+#     cp "$HOME/Repositories/_tooling/templates/pre-push" .githooks/pre-push
+#     chmod +x .githooks/pre-push && git config core.hooksPath .githooks
+# Commit .githooks/pre-push. The path is relative, so each worktree runs its
+# own checkout's hook; a checkout without the file pushes unguarded.
+# core.hooksPath replaces .git/hooks.
+#
+# For every ref pushed, the receipt `<git common dir>/<repo>-tested/<tree>`
+# must exist; <repo> is the name of the checkout holding the common dir.
+# tests/run_all.sh writes it (_tooling/lib/receipt.sh) after a green full run
+# on a clean tree. Deletes pass. Reads stdin and the git dir; writes nothing.
+# A guardrail, not a boundary: `git push --no-verify` bypasses it.
+
+common=$(git rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || {
+  echo "pre-push: cannot find the git directory; refusing." >&2
+  exit 1
+}
+dir="$common/$(basename "$(dirname "$common")")-tested"
+
+status=0
+while read -r lref lsha _rref _rsha; do
+  [ -n "$lsha" ] || continue
+  case $lsha in *[!0]*) ;; *) continue ;; esac  # all zeros: a delete
+  tree=$(git rev-parse --verify --quiet "$lsha^{tree}") || {
+    echo "pre-push: cannot resolve a tree for $lref at $lsha; refusing." >&2
+    status=1
+    continue
+  }
+  if [ ! -e "$dir/$tree" ]; then
+    echo "pre-push: no green local full run for tree $tree ($lref at $lsha)." >&2
+    echo "  Run on a clean checkout of that commit: bash tests/run_all.sh" >&2
+    status=1
+  fi
+done
+exit $status
