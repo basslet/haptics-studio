@@ -8,7 +8,7 @@ A private long-term copy of `meta/haptics-studio` that the operator's agents wor
 
 ## Position
 
-The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, the requirements for the upstream check, and the repoint of `.gitmodules` to the SDK copy. Whether this copy stays standalone or becomes a public fork is open with the operator's colleagues.
+The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, the requirements for the upstream check and the SDK pin, the repoint of `.gitmodules` to the SDK copy, and CI's token to read it. Whether this copy stays standalone or becomes a public fork is open with the operator's colleagues.
 
 ## Decisions taken
 
@@ -16,13 +16,14 @@ The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, t
 |---|---|---|
 | 2026-11-04 | A private copy, not a fork, until the colleagues report | operator |
 | 2026-11-04 | The SDK is its own repo, traced at its own root | operator |
-| 2026-11-04 | `.gitmodules` points at the SDK copy on this branch; the operator's choice for CI may undo it | agent |
+| 2026-11-04 | `.gitmodules` points at the SDK copy | agent |
+| 2026-11-04 | CI reads the private SDK with a read-only token in the repo secret `SDK_CHECKOUT_TOKEN` | operator |
 
 ## In flight
 
 | workstream | state | owner | blocked on |
 |---|---|---|---|
-| Tooling layer | PR #1 open from `chore/claude-setup`; its CI fails at checkout (run 41861038969); needs `_tooling` `feat/tracey-lint-comments` merged for the gate to read `.ts` markers | this session | the operator's choice for CI; `_tooling` PR |
+| Tooling layer | PR #1 open from `chore/claude-setup`; needs `_tooling` `feat/tracey-lint-comments` merged for the gate to read `.ts` markers | this session | the checkout step's first run with the token; architect re-review; `_tooling` PR |
 
 ## Unowned
 
@@ -30,9 +31,9 @@ The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, t
 
 ## Next action
 
-The operator chooses how CI gets the private SDK. No pushes to PR #1 until then: each spends paid CI minutes.
+Read the checkout step of PR #1's `Tests` run with the token, then the architect re-reviews and the outside review runs. Each push to PR #1 spends paid CI minutes.
 
 ## Standing risks / not verified
 
-- CI cannot read the private SDK, and the sync from Meta has never run: `docs/backlog/EXPECTATIONS.md`.
+- CI's token has not run yet, and the sync from Meta has never run: `docs/backlog/EXPECTATIONS.md`. The token's expiry is unknown: `DEBT-2026-11-04-sdk-checkout-token-expiry`.
 - ESLint, the frontend typecheck, `yarn audit:ci` and Playwright are outside the suite; Meta's branding remains: `docs/backlog/DEBT.md`.
