@@ -8,9 +8,11 @@ set -euo pipefail
 PATH="$(printf %s "$PATH" | tr : '\n' | grep -v '/_tooling/bin/*$' | paste -sd: -)"
 export PATH
 cd "$(dirname "$0")/.."
+# The update moves a committed, unpinned SDK change off HEAD; this leaves its commit on screen.
+git submodule status third-party/haptics-sdk
 git submodule update --init --recursive
 # r[impl sdk.install-refuses-uncommitted-sdk]
-[ -z "$(git status --porcelain -- third-party/haptics-sdk)" ] || {
+[ -z "$(git status --porcelain --ignore-submodules=none -- third-party/haptics-sdk)" ] || {
   echo "install_deps: third-party/haptics-sdk holds changes this tree does not pin; commit and pin them, or restore them" >&2
   exit 1
 }

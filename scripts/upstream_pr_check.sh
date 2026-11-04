@@ -5,6 +5,7 @@
 # change against its first parent. Run it from a checkout of origin/main: the branch has no copy.
 # Exit: 0 clean, 1 refused, 2 usage; a git failure (unknown branch, no upstream or origin remote) exits non-zero.
 # shortcut: a merge of newer upstream/main that touches a refused path is refused too; rebase the branch.
+# shortcut: an honest change for Meta to the SDK pointer or to a file this copy edits is refused too; read that diff by hand, and narrow the list when the first one is bound for Meta.
 set -euo pipefail
 export LC_ALL=C   # a non-UTF-8 byte must not hide a line from grep
 

@@ -42,7 +42,7 @@ refused() {
   : > "$YARN_LOG"
   out="$(bash scripts/install_deps.sh 2>&1)" || rc=$?
   [ "$rc" -eq 1 ] || fail "$1: exited $rc, expected a refusal: $out"
-  case "$out" in *"$SDK"*) ;; *) fail "$1: the SDK was not named: $out" ;; esac
+  case "$out" in *"$SDK holds changes"*) ;; *) fail "$1: the SDK was not named: $out" ;; esac
   [ ! -s "$YARN_LOG" ] || fail "$1: yarn ran before the refusal"
   [ "$(cat native/bin/.sdk-commit)" = "$before" ] || fail "$1: the stamp moved"
 }
@@ -76,6 +76,15 @@ test_edited_sdk_refused() {
 }
 
 # r[verify sdk.install-refuses-uncommitted-sdk]
+test_ignore_setting_does_not_hide_an_edit() {
+  git config "submodule.$SDK.ignore" dirty
+  echo edited > "$SDK/f"
+  refused "an edited SDK file under an ignore setting"
+  git -C "$SDK" checkout -q -- f
+  git config --unset "submodule.$SDK.ignore"
+}
+
+# r[verify sdk.install-refuses-uncommitted-sdk]
 test_untracked_sdk_file_refused() {
   echo new > "$SDK/g"
   refused "an untracked SDK file"
@@ -94,6 +103,7 @@ test_absent_stamp_builds_and_stamps_the_pin
 test_tree_in_step_does_not_rebuild
 test_submodule_off_pin_goes_back_to_the_pin
 test_edited_sdk_refused
+test_ignore_setting_does_not_hide_an_edit
 test_untracked_sdk_file_refused
 test_staged_pointer_refused
 echo "ok: install_deps"
