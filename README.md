@@ -253,6 +253,8 @@ yarn native:update
 
 Binaries are placed in `./native/bin/`.
 
+`yarn install` keeps a binary that already exists. After the SDK pin moves, run `scripts/install_deps.sh`: it puts the submodule on the pin and rebuilds the binary when it was not built from that commit.
+
 ### Linting & Type Checking
 
 ``` bash
