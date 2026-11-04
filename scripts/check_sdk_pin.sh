@@ -12,3 +12,6 @@ case "$(git submodule status third-party/haptics-sdk)" in
 esac
 pin="$(git rev-parse HEAD:third-party/haptics-sdk)"
 [ "$(cat native/bin/.sdk-commit 2>/dev/null || true)" = "$pin" ] || refuse "the native SDK was not built from the pinned commit"
+# r[impl sdk.suite-refuses-rebuilt-binary]
+[ -n "$(find native/bin -name HapticsSDK.node)" ] || refuse "there is no native SDK binary"
+[ -z "$(find native/bin -name HapticsSDK.node -newer native/bin/.sdk-commit)" ] || refuse "a native SDK binary is newer than the stamp"

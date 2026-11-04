@@ -23,7 +23,7 @@ The copy holds upstream's `main`. `chore/claude-setup` adds the tooling layer, t
 
 | workstream | state | owner | blocked on |
 |---|---|---|---|
-| Tooling layer | PR #1 open from `chore/claude-setup`; needs `_tooling` `feat/tracey-lint-comments` merged for the gate to read `.ts` markers | this session | the checkout step's first run with the token; architect re-review; `_tooling` PR |
+| Tooling layer | PR #1 open from `chore/claude-setup`; needs `_tooling` PR #133 (`feat/tracey-lint-comments`) merged first, because `tracey-lint` checks `.ts` markers only there and this repo's config cites that branch's probe cases | this session | architect re-review; `_tooling` PR #133 |
 
 ## Unowned
 

@@ -21,6 +21,7 @@ jobs:
         with:
           submodules: recursive
           token: ${{ secrets.SDK_CHECKOUT_TOKEN }}
+          persist-credentials: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

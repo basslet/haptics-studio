@@ -29,7 +29,7 @@ git merge upstream/main     # may stop with a conflict on third-party/haptics-sd
 git -C third-party/haptics-sdk fetch origin
 git -C third-party/haptics-sdk checkout <sdk-commit>   # the commit merged in the SDK repo
 git add third-party/haptics-sdk
-git commit                  # finishes a stopped merge, or records the pointer after a clean one; skip if nothing changed
+git commit -m "Sync from upstream/main"   # finishes a stopped merge, or records the pointer after a clean one; skip if nothing changed
 scripts/install_deps.sh
 bash tests/run_all.sh
 git push -u origin sync/upstream-<date>
@@ -43,8 +43,12 @@ A PR publishes every commit on its branch, so these branches start from `upstrea
 
 ```bash
 git switch --no-track -c <topic> upstream/main
+git submodule update --init --recursive
+yarn native:update          # with _tooling/bin off PATH: the Jest suites load this binary
 yarn test:all
 ```
+
+Back on a branch from `origin/main`, `scripts/install_deps.sh` rebuilds from the pinned commit; `tests/run_all.sh` refuses a binary newer than the stamp.
 
 From a checkout of `origin/main`, which holds the check and needs only the branch name:
 
@@ -69,7 +73,7 @@ scripts/install_deps.sh                      # needs read access to the private 
 
 - Node 24 or later, yarn 1, Rust stable with the `aarch64-apple-darwin` and `x86_64-apple-darwin` targets.
 - This repo has no venv: `.claude/context/builder.md` holds the Node mechanics.
-- `scripts/install_deps.sh` puts the submodule on the pinned commit, installs `node_modules` and builds the native SDK from that commit, and stamps the commit in `native/bin/.sdk-commit`. Run it after any move of the pointer: `tests/run_all.sh` refuses to start otherwise. Plain `yarn install` fails under `_tooling/bin` on `PATH` (`_tooling` `DEBT-2026-11-04-cc-shadows-c-compiler`).
+- `scripts/install_deps.sh` puts the submodule on the pinned commit, installs `node_modules` and builds the native SDK from that commit, and stamps the commit in `native/bin/.sdk-commit`. Run it after any move of the pointer or a build by hand: `tests/run_all.sh` refuses to start otherwise. Plain `yarn install` fails under `_tooling/bin` on `PATH` (`_tooling` `DEBT-2026-11-04-cc-shadows-c-compiler`).
 
 ## Suite
 

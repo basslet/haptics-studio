@@ -6,3 +6,8 @@ r[sdk.suite-refuses-stale-pin]
 `scripts/check_sdk_pin.sh`, which `tests/run_all.sh` calls before any test, shall exit non-zero when `third-party/haptics-sdk` is uninitialised, is off the commit this tree pins, or `native/bin/.sdk-commit` does not name that commit.
 
 The Jest suites load the built binary, and `yarn` skips the build whenever a binary exists, so a moved pointer would otherwise pass the suite on the old SDK.
+
+r[sdk.suite-refuses-rebuilt-binary]
+`scripts/check_sdk_pin.sh` shall exit non-zero when `native/bin` holds no `HapticsSDK.node`, or holds one newer than `native/bin/.sdk-commit`.
+
+A build by hand from another SDK commit leaves the stamp in place, so the stamp alone does not say what the binary holds.
