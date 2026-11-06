@@ -1,0 +1,40 @@
+name: board
+# Moves cards on the GitHub Project board from this repo's events. It runs _tooling's main and never a PR's code.
+on:
+  issues:
+    types: [opened, closed, reopened]
+  pull_request_target:
+    types: [opened, reopened, ready_for_review, converted_to_draft, closed, edited]
+  push:
+    branches: ['[0-9]+-*', '**/[0-9]+-*']
+  delete:
+  workflow_dispatch:
+    inputs:
+      card:
+        description: Issue number to repeat a missed event for
+        required: true
+        type: string
+permissions: {}
+concurrency:
+  group: board
+  queue: max
+jobs:
+  event:
+    if: >-
+      (github.event_name != 'issues' || !contains(github.event.issue.labels.*.name, 'board-skip')) &&
+      (github.event_name != 'pull_request_target' || github.event.action != 'edited' || github.event.changes.body) &&
+      (github.event_name != 'push' || github.event.created) &&
+      (github.event_name != 'delete' || github.event.ref_type == 'branch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: basslet/_tooling
+          ref: main
+          token: ${{ secrets.BOARD_TOKEN }}
+          persist-credentials: false
+      - run: bin/board-event
+        env:
+          GH_TOKEN: ${{ secrets.BOARD_TOKEN }}
+          BOARD_CARD: ${{ inputs.card }}
