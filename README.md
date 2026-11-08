@@ -510,7 +510,7 @@ The companion app protocol is documented above in the Companion Apps section. To
 5.  Request specific formats via `get_ahap`, `get_android`, or `get_clip` depending on your platform.
 6.  Use the Haptics SDK (or platform-native APIs) to play the received haptic data.
 
-The VR companion app (`companion/quest/`) and mobile example (`companion/mobile/`) are good references.
+The VR companion app (`companion/quest/`) and mobile examples (`companion/ios/`, `companion/android/`) are good references.
 
 ## Application Data
 

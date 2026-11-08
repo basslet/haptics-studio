@@ -38,5 +38,8 @@ jobs:
       - name: Audit dependencies for high/critical CVEs
         run: yarn audit:ci
 
+      - name: Check documentation links
+        run: yarn docs:lint
+
       - name: Run tests
         run: yarn test:all
