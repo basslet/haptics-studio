@@ -18,7 +18,7 @@ describe('global listeners', () => {
 
   it.each([
     'https://developers.meta.com/horizon/resources/haptics-studio/',
-    'https://github.com/facebook/haptics-studio/issues',
+    'https://github.com/basslet/haptics-studio/issues',
     'https://www.youtube.com/watch?v=test',
   ])('allows a trusted external URL: %s', url => {
     expect(isAllowedExternalUrl(url)).toBe(true);

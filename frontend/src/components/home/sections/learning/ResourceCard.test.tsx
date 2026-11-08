@@ -21,7 +21,7 @@ describe('<ResourceCard />', () => {
       description:
         'Deep dive into our example projects and learning resources in our GitHub repository.',
       image: 'learning-github.png',
-      url: 'https://github.com/oculus-samples/haptics-studio-examples/',
+      url: 'https://github.com/basslet/haptics-studio-examples/',
     };
     const element = render(<ResourceCard resource={resource} />, {});
     expect(element.queryByText('NEW')).toBeNull();
@@ -40,7 +40,7 @@ describe('<ResourceCard />', () => {
       description:
         'Deep dive into our example projects and learning resources in our GitHub repository.',
       image: 'learning-github.png',
-      url: 'https://github.com/oculus-samples/haptics-studio-examples/',
+      url: 'https://github.com/basslet/haptics-studio-examples/',
     };
     const element = render(<ResourceCard resource={resource} />, {});
     expect(element.getByText('NEW')).toBeInTheDocument();
