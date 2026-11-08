@@ -1,4 +1,4 @@
-// Run with: node --test scripts/
+// Run with: yarn docs:lint
 const test = require('node:test');
 const assert = require('node:assert');
 const { execFileSync, spawnSync } = require('child_process');
@@ -15,9 +15,10 @@ const lint = (files) => {
     fs.mkdirSync(path.dirname(path.join(dir, f)), { recursive: true });
     fs.writeFileSync(path.join(dir, f), content);
   }
-  execFileSync('git', ['init', '-q'], { cwd: dir });
-  execFileSync('git', ['add', '-A'], { cwd: dir });
-  const r = spawnSync('node', [script, dir], { encoding: 'utf8' });
+  const env = { ...process.env, HOME: dir }; // no global git config
+  execFileSync('git', ['init', '-q'], { cwd: dir, env });
+  execFileSync('git', ['add', '-A'], { cwd: dir, env });
+  const r = spawnSync('node', [script, dir], { encoding: 'utf8', env: { ...process.env, HOME: dir } });
   fs.rmSync(dir, { recursive: true, force: true });
   return r;
 };
@@ -48,4 +49,16 @@ test('in source files only comment lines are checked', () => {
   assert.strictEqual(r.status, 1);
   assert.match(r.stderr, /src\/a\.ts:2:/);
   assert.doesNotMatch(r.stderr, /src\/a\.ts:1:/);
+});
+
+test('names the line for a malformed percent-escape instead of crashing', () => {
+  const r = lint({ ...ok, 'README.md': '[a](100%.md)' });
+  assert.strictEqual(r.status, 1);
+  assert.match(r.stderr, /README\.md:1: broken link 100%\.md/);
+  assert.doesNotMatch(r.stderr, /URIError/);
+});
+
+test('ignores backticked text that does not start at a repo directory', () => {
+  const r = lint({ ...ok, 'README.md': 'Send `application/json` and `text/plain`.' });
+  assert.strictEqual(r.status, 0, r.stderr);
 });

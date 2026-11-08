@@ -3,6 +3,8 @@
 // Checks relative markdown links and `backticked/paths` that start at a top-level repo directory,
 // in tracked *.md files and in comment lines of tracked source files.
 // shortcut: external URLs and #anchors are not fetched or checked; add that if broken web links keep slipping in.
+// shortcut: no Markdown parser. Links with a title, <angle brackets>, parentheses in the target, a leading / or a ?query,
+// fenced code lines, block-comment lines without a leading *, and docstring bodies are not read correctly; upgrade to a parser when one of them fires.
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
@@ -24,7 +26,10 @@ for (const file of tracked.filter((f) => srcExt.test(f) && fs.existsSync(path.jo
     const where = `${file}:${i + 1}`;
     for (const [, target] of line.matchAll(/\]\(([^)\s]+)\)/g)) {
       if (/^([a-z][a-z0-9+.-]*:|#)/i.test(target)) continue;
-      const rel = decodeURIComponent(target.split('#')[0]);
+      let rel = target.split('#')[0];
+      try {
+        rel = decodeURIComponent(rel);
+      } catch {} // a malformed %-escape stays as written and is reported as missing
       if (rel && !fs.existsSync(path.resolve(root, path.dirname(file), rel))) errors.push(`${where}: broken link ${target}`);
     }
     for (const [, p] of line.matchAll(/`([\w.-]+(?:\/[\w.@-]+)+\/?)`/g)) {
