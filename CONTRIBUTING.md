@@ -2,7 +2,7 @@
 
 # Contributing to Open Source Projects
 
-We want to make contributing to this project as easy and transparent as possible. It is maintained by volunteers in their free time, so reviews and answers are best effort, with no promised response time.
+We want to make contributing to this project as easy and transparent as possible.
 
 ## Pull Requests
 
@@ -12,11 +12,11 @@ We welcome your pull requests. They are reviewed and merged in this repository.
 2. If you've added code that should be tested, add tests.
 3. If you've changed APIs, update the documentation.
 4. Make sure the tests and linters pass; see [Building](docs/building.md).
-5. Keep code changes and documentation changes in separate commits.
+5. Keep code changes and documentation changes in separate commits, so code changes can be taken to other copies of this project without the docs.
 
 ## Issues
 
-We use GitHub issues to track bugs and requests. Please describe the problem clearly, with enough detail to reproduce it, and include your app version and operating system.
+We use GitHub issues to track bugs and requests. Please describe the problem clearly, with enough detail to reproduce it, and include the version you use and your operating system. The project is maintained by volunteers in their free time, so reviews and answers are best effort, with no promised response time.
 
 ## Security
 
@@ -90,7 +90,7 @@ the project or its community.
 
 ### Enforcement
 
-Abusive, harassing, or otherwise unacceptable behavior may be reported by contacting a maintainer on GitHub: [@basslet](https://github.com/basslet). The project has no private reporting channel yet, so it cannot promise confidentiality. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances.
+Abusive, harassing, or otherwise unacceptable behavior may be reported by contacting a maintainer on GitHub: [@basslet](https://github.com/basslet). GitHub has no private messages, so a report made there is public. Until a second maintainer is named, a report about that maintainer has no independent reviewer. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances.
 
 Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
