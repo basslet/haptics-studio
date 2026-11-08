@@ -77,7 +77,7 @@ Audio File (.wav/.mp3)
 4.  Preview — Haptic data is rendered to device-specific formats and streamed over WebSocket to a companion app on Quest or mobile.
 5.  Export — The final haptic data is exported in one or more formats (see [Export Formats](../README.md#export-formats)).
 
-## Repository Layout
+## Other Top-Level Directories
 
 ```
 Haptics-Studio/
