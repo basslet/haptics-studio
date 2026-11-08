@@ -32,14 +32,15 @@ jobs:
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@stable
 
+      # Needs only the checkout, so a broken link fails before the install.
+      - name: Check documentation links
+        run: yarn docs:lint
+
       - name: Install dependencies
         run: yarn install
 
       - name: Audit dependencies for high/critical CVEs
         run: yarn audit:ci
-
-      - name: Check documentation links
-        run: yarn docs:lint
 
       - name: Run tests
         run: yarn test:all

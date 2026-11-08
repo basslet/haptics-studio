@@ -7,7 +7,7 @@ const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-const root = path.resolve(__dirname, '..');
+const root = path.resolve(process.argv[2] || path.join(__dirname, '..'));
 const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
 const topDirs = new Set(tracked.filter((f) => f.includes('/')).map((f) => f.split('/')[0]));
 const srcExt = /\.(ts|tsx|js|jsx|kt|java|swift|cs|py|sh|md)$/;
