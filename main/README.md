@@ -32,5 +32,5 @@ The app stores configuration and logs in the following locations:
 | :---------: | :---------------------------------------------: |
 | macOS       | `~/Library/Application Support/Haptics Studio/` |
 | Windows     | `%APPDATA%/Haptics Studio/`                     |
-| Development | Same path with `-dev` suffix                    |
+| Development | Same path with `-development` suffix            |
 

@@ -1,6 +1,8 @@
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)
+
 # Building Haptics Studio
 
-## Getting Started
+## Setup
 
 ### Prerequisites
 
@@ -126,3 +128,5 @@ yarn test:e2e
 
 ```
 
+
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)
