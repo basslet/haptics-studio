@@ -1,3 +1,5 @@
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)
+
 # Architecture
 
 Details live next to the code: [main process](../main/README.md), [renderer](../frontend/README.md), [shared code and data models](../shared/README.md), [companion apps](../companion/README.md).
@@ -75,13 +77,13 @@ Audio File (.wav/.mp3)
 2.  Analyze — The Offline Audio-to-Haptics DSP engine extracts amplitude and frequency envelopes, producing haptic data.
 3.  Edit — The envelope editor renders the haptic data on a canvas. Users add, move, and delete breakpoints. Each edit triggers an IPC call that updates the in-memory project.
 4.  Preview — Haptic data is rendered to device-specific formats and streamed over WebSocket to a companion app on Quest or mobile.
-5.  Export — The final haptic data is exported in one or more formats (see [Export Formats](../README.md#export-formats)).
+5.  Export — The final haptic data is exported in one or more formats (see [Export Formats](design-and-integration.md#export-formats)).
 
 ## Other Top-Level Directories
 
 ```
 Haptics-Studio/
-├── native/                  # Native Node.js extensions (C++/Rust)
+├── native/                  # Build output of the native extensions (not tracked)
 ├── e2e/                     # End-to-end tests (Playwright)
 ├── scripts/                 # Build and utility scripts
 └── package.json             # Scripts, dependencies, build config
@@ -132,3 +134,5 @@ The companion app protocol is documented in [companion/README.md](../companion/R
 
 The VR companion app (`companion/quest/`) and mobile examples (`companion/ios/`, `companion/android/`) are good references.
 
+
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)

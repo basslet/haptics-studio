@@ -1,3 +1,5 @@
+[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md)
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/logo-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="./assets/logo-light.png">
@@ -21,50 +23,37 @@ Note: Haptics Studio is the open-source project. Meta Haptics Studio (<https://d
   * Project Management — Organize clips into groups, add markers and notes, and save everything as a .hasp project file.
   * Sample Library & Tutorials — Built-in haptic packs and guided tutorials to get you started quickly.
 
-## Documentation
+## Who It Is By
 
-  * [Building from source](docs/building.md)
-  * [Architecture](docs/architecture.md)
-  * [Companion apps](companion/README.md)
+Haptics Studio was created by the Meta Haptics team (formerly Lofelt) and released by Meta under the MIT license. This repository is maintained by a community of contributors. It is not affiliated with, endorsed by, or supported by Meta Platforms, Inc.
 
-## Export Formats
+## Requirements
 
-| Format          | Extension                 | Description                                                   | Method                                       |
-| :-------------: | :-----------------------: | :-----------------------------------------------------------: | :------------------------------------------: |
-| Haptic Clip     | `.haptic`                 | Cross-platform JSON — the canonical haptic interchange format | Direct serialization of `HapticData`         |
-| Core Haptics    | `.ahap`                   | Apple Core Haptics format for iOS/macOS                       | `hapticDataToSplitAhap()` via native SDK     |
-| Android         | `.json` / `.kt` / `.java` | Android-compatible amplitude + timing arrays                  | `getAmplitudeAndTimingArrays()`              |
-| Rendered Audio  | `.wav`                    | Haptic signal rendered through an actuator profile            | `renderHapticDataToAudio()` + `.acf` profile |
-| Project Package | `.zip`                    | Complete bundle: `.hasp` project + audio + all exports        | Archive utility                              |
+Haptics Studio is built for macOS and Windows. Minimum versions will be listed here with the first ready-to-install version.
 
-### Actuator Profiles
+## Download
 
-Rendered .wav output is shaped by actuator characteristic files (`.acf`) in `main/actuators/`:
+Ready-to-install versions are not available yet. They will appear on the [Releases](https://github.com/basslet/haptics-studio/releases) page.
 
-| Profile              | Device                    |
-| :------------------: | :-----------------------: |
-| `meta_quest_pro.acf` | Meta Quest Pro controller |
+Previewing on a headset or phone needs a companion app; see [Companion apps](docs/design-and-integration.md#companion-apps).
 
-## Relationship to Haptics SDK
+## First Steps
 
-Haptics Studio works alongside the Meta Haptics SDK (<https://github.com/basslet/haptics-sdk>), which is a separate open-source project:
+1.  Add a clip from an audio file (`.wav`, `.mp3`, `.ogg`, `.aiff` or `.aif`). Haptics Studio analyzes it and generates a haptic clip.
+2.  Fine-tune the clip in the envelope editor.
+3.  Preview it on a device through a companion app.
+4.  Export it. [Design & Integration](docs/design-and-integration.md) explains the formats and what to do next.
 
-|               | Haptics Studio                                       | Haptics SDK                                    |
-| :-----------: | :--------------------------------------------------: | :--------------------------------------------: |
-| Purpose       | Design haptic clips                                  | Play haptic clips in your app                  |
-| Role          | Authoring tool (desktop app)                         | Runtime library (Unity / Unreal / Native)      |
-| Formats       | Imports audio, exports .haptic, .ahap, Android, .wav | Loads .haptic files and renders them on device |
-| Where it runs | macOS / Windows desktop                              | Quest                                          |
+## Help
 
-How they connect:
+File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with your app version, your operating system and any logs; the [Application Data](main/README.md#application-data) table shows where the app keeps them. Haptics Studio is maintained by volunteers in their free time, so help is best effort, with no promised response time.
 
-1.  Design a haptic clip in Haptics Studio.
-2.  Export it as a .haptic file (the cross-platform interchange format).
-3.  Integrate the .haptic file into your app using the Haptics SDK.
-4.  Play the clip at runtime — the SDK handles platform-specific rendering.
+## Related Projects
 
-The native DSP engine that powers Haptics Studio's audio analysis and rendering is built from the same Haptics SDK core library (`HapticsSdkNapi` is a Rust NAPI binding to the SDK).
+[Haptics Studio](https://github.com/basslet/haptics-studio) — design haptics · [Haptics SDK](https://github.com/basslet/haptics-sdk) — play them in your app · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples) — sample projects and design guidance
 
 ## License
 
 This project is licensed under the MIT License — see the LICENSE file for details.
+
+[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md)

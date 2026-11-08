@@ -14,7 +14,7 @@
 
 Haptics Studio includes companion apps that let you preview ("audition") haptic clips on real hardware in real time. The desktop app acts as a server; companion apps on VR headsets or mobile devices connect as clients, receive haptic data, and play it on the device's native haptic engine.
 
-This repository ships two companion apps:
+This repository ships three companion apps:
 
 | App                        | Platform   | Technology  | Purpose                                         |
 | :------------------------: | :--------: | :---------: | :---------------------------------------------: |
