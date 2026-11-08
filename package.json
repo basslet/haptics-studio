@@ -9,6 +9,7 @@
     "main:start": "cross-env NODE_ENV=development electron --inspect=5858 ./main/dist/main.js",
     "main:start:dev": "yarn main:build:dev && yarn main:start",
     "main:start:prod": "yarn main:build:prod && yarn main:start",
+    "docs:lint": "node scripts/check_doc_links.js && node --test scripts/*.test.js",
     "main:lint": "eslint --max-warnings 0 -c ./main/eslint.config.js './main/src/**/*.{ts,tsx}'",
     "main:typecheck": "tsc --project ./main/tsconfig.json --noEmit --skipLibCheck",
     "premain:build": "rimraf ./main/dist && mkdirp main/dist",
