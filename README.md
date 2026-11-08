@@ -44,6 +44,10 @@ Previewing on a headset or phone needs a companion app; see [Companion apps](doc
 3.  Preview it on a device through a companion app.
 4.  Export it. [Design & Integration](docs/design-and-integration.md) explains the formats and what to do next.
 
+## Privacy
+
+This open-source build contains no telemetry transmission; [SECURITY.md](SECURITY.md) shows how to check.
+
 ## Help
 
 File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with your app version, your operating system and any logs; the [Application Data](main/README.md#application-data) table shows where the app keeps them. Haptics Studio is maintained by volunteers in their free time, so help is best effort, with no promised response time.
