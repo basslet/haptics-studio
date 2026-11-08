@@ -19,7 +19,7 @@ let html = converter.makeHtml(markdown);
 
 html = html.replace(
   'please bring it to our attention through any of the ways detailed here :',
-  'please bring it to our attention through any of the ways detailed here:<p><a href="https://github.com/facebook/haptics-studio/issues">https://github.com/facebook/haptics-studio/issues</a></p>',
+  'please bring it to our attention through any of the ways detailed here:<p><a href="https://github.com/basslet/haptics-studio/issues">https://github.com/basslet/haptics-studio/issues</a></p>',
 );
 
 const file = template

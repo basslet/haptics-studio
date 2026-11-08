@@ -51,7 +51,7 @@ npm install -g yarn
 
 ``` bash
 # Clone the repository
-git clone https://github.com/facebook/haptics-studio haptics-studio
+git clone https://github.com/basslet/haptics-studio haptics-studio
 cd haptics-studio
 
 # Install dependencies (also builds native extensions)
@@ -450,7 +450,7 @@ This is intended as a starting point for developers building their own auditioni
 
 ## Relationship to Haptics SDK
 
-Haptics Studio works alongside the Meta Haptics SDK (<https://github.com/facebook/meta-haptics-sdk>), which is a separate open-source project:
+Haptics Studio works alongside the Meta Haptics SDK (<https://github.com/basslet/haptics-sdk>), which is a separate open-source project:
 
 |               | Haptics Studio                                       | Haptics SDK                                    |
 | :-----------: | :--------------------------------------------------: | :--------------------------------------------: |
@@ -495,7 +495,7 @@ The frontend lives in `frontend/src/`. Start with the relevant component directo
 
 ### Support a New Platform for Playback
 
-Runtime playback on new platforms is best handled in the Haptics SDK repository (<https://github.com/facebook/meta-haptics-sdk>), not in Haptics Studio. The SDK is responsible for loading `.haptic` files and rendering them through each platform's native haptic API.
+Runtime playback on new platforms is best handled in the Haptics SDK repository (<https://github.com/basslet/haptics-sdk>), not in Haptics Studio. The SDK is responsible for loading `.haptic` files and rendering them through each platform's native haptic API.
 
 If you need to add a new rendering target for preview within Studio (e.g., a new actuator profile), add an `.acf` file to `main/actuators/` and a render settings entry in `main/renderers/`.
 
