@@ -1,4 +1,4 @@
-[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md)
+[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)
 
 # Security and Privacy
 
@@ -38,4 +38,4 @@ Limits of this statement:
 - The app's "Data Preferences" menu item offers no real choice: `hasConsent` is always true, and nothing is sent either way.
 - The app grants its own local pages every browser permission they request, so no permission prompt appears inside the app (`git grep -n "setPermissionRequestHandler" -- main/src`). Its main window shows only those local pages.
 
-[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md)
+[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)

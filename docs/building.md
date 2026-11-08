@@ -1,4 +1,4 @@
-[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)
 
 # Building Haptics Studio
 
@@ -129,4 +129,4 @@ yarn test:e2e
 ```
 
 
-[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)

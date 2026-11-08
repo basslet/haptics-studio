@@ -1,4 +1,4 @@
-[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)
 
 # Design & Integration
 
@@ -62,4 +62,4 @@ Companion apps play your clips on a real device while you edit them on the deskt
 
 The iOS and Android apps have no store release, so using them today means building them yourself. How the apps talk to the desktop is in [companion/README.md](../companion/README.md).
 
-[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md)
+[Getting Started](../README.md) · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) · [Contributing](../CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)
