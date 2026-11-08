@@ -3,7 +3,7 @@
 | What | Where | When to act |
 |---|---|---|
 | Vulnerability reporting must be turned on. `SECURITY.md` names the Report a vulnerability button, which GitHub documents for public repositories. | Repository settings, `SECURITY.md` | When the repository opens |
-| There is a single conduct contact, so a report about that person has no independent reviewer. | `CODE_OF_CONDUCT.md` | Add a second contact |
+| There is a single conduct contact, so a report about that person has no independent reviewer. | `CONTRIBUTING.md` | Add a second contact |
 | `basslet/haptics-studio-examples` must open with or before Studio, or the app's Learning link fails for outsiders. The same goes for `basslet/haptics-sdk` and the README's links. | Opening order of the three repositories | When the repositories open |
 | Dependabot alerts on this repository have not been triaged. | Repository security tab | Before the repository opens |
 | The README's feature list and `docs/architecture.md` say ".wav or .mp3", while First Steps lists more formats. | `README.md`, `docs/architecture.md` | The copy rewrite |

@@ -4,7 +4,7 @@ Work on the documentation restructure is tracked in #5.
 
 ## Open pull requests
 
-Merge order: #20, #21, #22, #24, #27, then the journal PR (#28).
+Merge order: #20, #21, #22, #24, #27, then #29, with merge commits.
 
 ## Cards with no pull request that can start
 
