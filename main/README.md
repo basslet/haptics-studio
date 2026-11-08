@@ -32,5 +32,5 @@ The app stores configuration and logs in the following locations:
 | :---------: | :---------------------------------------------: |
 | macOS       | `~/Library/Application Support/Haptics Studio/` |
 | Windows     | `%APPDATA%/Haptics Studio/`                     |
-| Development | Same path with `-development` suffix            |
+| Development | The `logs` and `configs` folders inside `main/`, in the working directory; crash dumps and Electron's own data go to the path above with a `-development` suffix |
 

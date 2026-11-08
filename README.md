@@ -25,21 +25,21 @@ Note: Haptics Studio is the open-source project. Meta Haptics Studio (<https://d
 
 ## Who It Is By
 
-Haptics Studio was created by the Meta Haptics team (formerly Lofelt) and released by Meta under the MIT license. This repository is maintained by a community of contributors.
+Haptics Studio was created by the Meta Haptics team (formerly Lofelt) and released by Meta under the MIT license. This repository is maintained by a community of contributors. It is not affiliated with, endorsed by, or supported by Meta Platforms, Inc.
 
 ## Requirements
 
-Haptics Studio is built for macOS and Windows. Minimum versions will be listed here with the first signed build.
+Haptics Studio is built for macOS and Windows. Minimum versions will be listed here with the first ready-to-install version.
 
 ## Download
 
-Signed builds are not available yet. They will appear on the [Releases](https://github.com/basslet/haptics-studio/releases) page.
+Ready-to-install versions are not available yet. They will appear on the [Releases](https://github.com/basslet/haptics-studio/releases) page.
 
 Previewing on a headset or phone needs a companion app; see [Companion apps](docs/design-and-integration.md#companion-apps).
 
 ## First Steps
 
-1.  Import an audio file (`.wav`, `.mp3`, `.ogg`, `.vorbis`, `.pcm`, `.aiff` or `.aif`). Haptics Studio analyzes it and generates a haptic clip.
+1.  Add a clip from an audio file (`.wav`, `.mp3`, `.ogg`, `.aiff` or `.aif`). Haptics Studio analyzes it and generates a haptic clip.
 2.  Fine-tune the clip in the envelope editor.
 3.  Preview it on a device through a companion app.
 4.  Export it. [Design & Integration](docs/design-and-integration.md) explains the formats and what to do next.
@@ -50,8 +50,7 @@ File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with you
 
 ## Related Projects
 
-  * [Haptics SDK](https://github.com/basslet/haptics-sdk): play haptics in your app
-  * [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples): sample projects and design guidance
+[Haptics Studio](https://github.com/basslet/haptics-studio) — design haptics · [Haptics SDK](https://github.com/basslet/haptics-sdk) — play them in your app · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples) — sample projects and design guidance
 
 ## License
 

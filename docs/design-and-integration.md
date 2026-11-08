@@ -21,7 +21,7 @@ Haptics Studio works alongside the Haptics SDK (<https://github.com/basslet/hapt
 | Purpose       | Design haptic clips                                  | Play haptic clips in your app                  |
 | Role          | Authoring tool (desktop app)                         | Runtime library (Unity / Unreal / Native)      |
 | Formats       | Imports audio, exports .haptic, .ahap, Android, .wav | Loads .haptic files and renders them on device |
-| Where it runs | macOS / Windows desktop                              | Quest                                          |
+| Where it runs | macOS / Windows desktop                              | Windows, macOS, Linux, VR headsets and consoles |
 
 How they connect:
 
@@ -38,7 +38,7 @@ The native DSP engine that powers Haptics Studio's audio analysis and rendering 
 | :-------------: | :-----------------------: | :-----------------------------------------------------------: | :------------------------------------------: |
 | Haptic Clip     | `.haptic`                 | Cross-platform JSON — the canonical haptic interchange format | Direct serialization of `HapticData`         |
 | Core Haptics    | `.ahap`                   | Apple Core Haptics format for iOS/macOS                       | `hapticDataToSplitAhap()` via native SDK     |
-| Android         | `.json` / `.kt` / `.java` | Android-compatible amplitude + timing arrays                  | `getAmplitudeAndTimingArrays()`              |
+| Android         | `.json`, or a Kotlin or Java snippet to copy | Android-compatible amplitude + timing arrays                  | `getAmplitudeAndTimingArrays()`              |
 | Rendered Audio  | `.wav`                    | Haptic signal rendered through an actuator profile            | `renderHapticDataToAudio()` + `.acf` profile |
 | Project Package | `.zip`                    | Complete bundle: `.hasp` project + audio + all exports        | Archive utility                              |
 
