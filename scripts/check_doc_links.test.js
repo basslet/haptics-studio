@@ -117,8 +117,12 @@ test('stops with one line when the origin is not one of the three repositories',
   const none = run();
   execFileSync('git', ['remote', 'add', 'origin', 'git@github.com:someone/Haptics-SDK.git'], { cwd: dir, env });
   const ssh = run();
+  execFileSync('git', ['remote', 'set-url', 'origin', 'https://user:SECRET@example.com/fork.git'], { cwd: dir, env });
+  const fork = run();
   fs.rmSync(dir, { recursive: true, force: true });
   assert.strictEqual(none.status, 1);
   assert.strictEqual(none.stderr, 'origin "none" is not haptics-studio, haptics-sdk or haptics-studio-examples; run the lint in a clone of one of them\n');
   assert.strictEqual(ssh.status, 0, ssh.stderr);
+  assert.strictEqual(fork.status, 1);
+  assert.match(fork.stderr, /^origin "https:\/\/example\.com\/fork\.git" is not /, 'credentials in the origin are not printed');
 });

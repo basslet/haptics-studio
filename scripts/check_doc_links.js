@@ -23,7 +23,8 @@ const root = path.resolve(args.find((a) => a !== '--fix') || path.join(__dirname
 // shortcut: a fork or local clone under another name is refused; add a name override if contributors need one.
 let origin = '';
 try {
-  origin = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: root, encoding: 'utf8', stdio: 'pipe' }).trim();
+  // Credentials in the URL never reach the output.
+  origin = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: root, encoding: 'utf8', stdio: 'pipe' }).trim().replace(/\/\/[^@/]*@/, '//');
 } catch {} // no origin: refused below with the others
 const REPO = path.basename(origin, '.git').toLowerCase();
 if (!REPOS.includes(REPO)) {
