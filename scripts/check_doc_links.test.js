@@ -1,4 +1,4 @@
-// Run with: yarn docs:lint
+// Run with: node --test scripts/*.test.js
 const test = require('node:test');
 const assert = require('node:assert');
 const { execFileSync, spawnSync } = require('child_process');
@@ -19,6 +19,7 @@ const lint = (files, ...args) => {
   const env = { ...process.env, HOME: dir }; // no global git config
   execFileSync('git', ['init', '-q'], { cwd: dir, env });
   execFileSync('git', ['add', '-A'], { cwd: dir, env });
+  execFileSync('git', ['remote', 'add', 'origin', 'https://github.com/basslet/haptics-studio.git'], { cwd: dir, env });
   const r = spawnSync('node', [script, dir, ...args], { encoding: 'utf8', env: { ...process.env, HOME: dir } });
   r.files = Object.fromEntries(Object.keys(files).map((f) => [f, fs.readFileSync(path.join(dir, f), 'utf8')]));
   fs.rmSync(dir, { recursive: true, force: true });
@@ -92,14 +93,14 @@ test('navigation block: a good page passes; a missing block, a wrong marker and 
   assert.doesNotMatch(r.stderr, /building|AGENTS|journal|broken link/);
 });
 
-test('--fix puts the block at the top, drops old navigation and keeps the body', () => {
+test('--fix replaces the block at the top, drops old navigation and keeps the body', () => {
   const old = '[Getting Started](../README.md) · [Architecture](architecture.md)';
   const body = '# Building\n\n| | |\n| --- | --- |\n| Key | Value |\n\n[a](architecture.md) · [b](design-and-integration.md)\n\nText.';
   const r = lint(
     {
       ...ok,
       'docs/building.md': `${old}\n\n${body}\n\n${old}\n\n`,
-      'docs/architecture.md': page('docs/architecture.md', `# Architecture\n\n${navBlock('README.md', 'haptics-studio')}`).replace(/\n/g, '\r\n'),
+      'docs/architecture.md': page('README.md', '# Architecture').replace(/\n/g, '\r\n'), // a stale block, CRLF
     },
     '--fix',
   );

@@ -1,27 +1,36 @@
 // doc_nav.js: the navigation block every documentation page of the three Haptics repositories starts with
-// (layout C of basslet/haptics-studio#32). The same file in basslet/haptics-studio, basslet/haptics-sdk and
-// basslet/haptics-studio-examples: change it in one, copy it to the other two, then run
-// `node scripts/doc_nav.js --compare [branch]`, which names every repository whose copy on that branch (main) differs.
-// List an entry only once its page exists; mark it 'local' while the page is not on its repository's main yet.
+// (layout C of basslet/haptics-studio#32). The SHARED files below are the same in basslet/haptics-studio,
+// basslet/haptics-sdk and basslet/haptics-studio-examples: change them in one, copy them to the other two, then run
+// `node scripts/doc_nav.js --compare`, which names every repository whose copy on main differs.
+// An entry is listed once its page exists on its repository's working branch; until that reaches main, links to it
+// from the other repositories 404 (accepted by the operator on #32).
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path').posix;
 
 const REPOS = ['haptics-studio', 'haptics-sdk', 'haptics-studio-examples'];
+const SHARED = ['doc_nav.js', 'doc_nav.test.js', 'check_doc_links.js', 'check_doc_links.test.js'];
 
-// [group, repository (null: the page's own), [[label, path from that repository's root, 'local'?]]].
-// A 'local' entry shows only on its own repository's pages: a page not on main yet, or an SDK sub-point (#32).
+// [group, repository (null: the page's own), [[label, path from that repository's root]]].
 const NAV = [
   [
     'Haptics Studio',
     'haptics-studio',
     [
       ['Getting Started', 'README.md'],
-      ['Design & Integration', 'docs/design-and-integration.md', 'local'],
-      ['Architecture', 'docs/architecture.md', 'local'],
+      ['Design & Integration', 'docs/design-and-integration.md'],
+      ['Architecture', 'docs/architecture.md'],
     ],
   ],
-  ['Haptics SDK', 'haptics-sdk', [['Overview', 'README.md']]],
+  [
+    'Haptics SDK',
+    'haptics-sdk',
+    [
+      ['Overview', 'README.md'],
+      ['Getting Started', 'docs/getting-started.md'],
+      ['Documentation', 'docs/README.md'],
+    ],
+  ],
   [
     'Haptics Studio Examples',
     'haptics-studio-examples',
@@ -62,43 +71,30 @@ const navBlock = (page, repo) => {
   const here = ancestors.find((p) => own.includes(p));
   const rows = NAV.map(([group, r, entries]) => {
     const target = r ?? repo;
-    const shown = target === repo ? entries : entries.filter(([, , local]) => !local);
     const entry = ([label, p]) => {
       if (target !== repo) return `[${label}](https://github.com/basslet/${target}${p === 'README.md' ? '' : `/blob/main/${encode(p)}`})`;
       return p === here ? `**▸ ${label}**` : `[${label}](${encode(path.relative(path.dirname(page), p))})`;
     };
-    return `| **${group}** | ${shown.map(entry).join(' · ')} |`;
+    return `| **${group}** | ${entries.map(entry).join(' · ')} |`;
   });
   return ['| | |', '| :--- | :--- |', ...rows].join('\n');
 };
 
-// Compares this file with the copy on `ref` of each repository; gh must be signed in while they are private.
-const compare = (ref) => {
-  const mine = fs.readFileSync(__filename, 'utf8').replace(/\r\n/g, '\n');
-  let same = true;
-  for (const repo of REPOS) {
-    let problem = null;
-    try {
-      const url = `repos/basslet/${repo}/contents/scripts/doc_nav.js?ref=${encodeURIComponent(ref)}`;
-      const theirs = execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github.raw', url], { encoding: 'utf8', stdio: 'pipe' });
-      if (theirs.replace(/\r\n/g, '\n') !== mine) problem = 'differs from this copy';
-    } catch (e) {
-      problem = `cannot be read: ${String(e.stderr || e.message).trim().split('\n')[0]}`;
-    }
-    if (problem) {
-      console.error(`${repo}: scripts/doc_nav.js on ${ref} ${problem}`);
-      same = false;
-    }
-  }
-  return same;
-};
-
+// --compare: gh must be signed in while the repositories are private; the first copy it cannot read stops the run.
 if (require.main === module) {
-  if (process.argv[2] !== '--compare') {
-    console.error('usage: node scripts/doc_nav.js --compare [branch]');
-    process.exit(2);
-  }
-  process.exit(compare(process.argv[3] || 'main') ? 0 : 1);
+  if (process.argv[2] !== '--compare') throw new Error('usage: node scripts/doc_nav.js --compare');
+  const mine = (f) => fs.readFileSync(`${__dirname}/${f}`, 'utf8').replace(/\r\n/g, '\n');
+  const theirs = (repo, f) => {
+    try {
+      return execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github.raw', `repos/basslet/${repo}/contents/scripts/${f}`], { encoding: 'utf8', stdio: 'pipe' });
+    } catch (e) {
+      console.error(`${repo}: scripts/${f} on main cannot be read: ${String(e.stderr || e.message).trim().split('\n')[0]}`);
+      process.exit(1);
+    }
+  };
+  const differs = REPOS.flatMap((repo) => SHARED.filter((f) => theirs(repo, f) !== mine(f)).map((f) => `${repo}: scripts/${f} on main differs`));
+  if (differs.length) console.error(differs.join('\n'));
+  process.exit(differs.length ? 1 : 0);
 }
 
 module.exports = { navBlock };
