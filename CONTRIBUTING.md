@@ -1,4 +1,9 @@
-[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)
+| | |
+| :--- | :--- |
+| **Haptics Studio** | [Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) |
+| **Haptics SDK** | [Overview](https://github.com/basslet/haptics-sdk) |
+| **Haptics Studio Examples** | [Overview](https://github.com/basslet/haptics-studio-examples) · [Guidelines](https://github.com/basslet/haptics-studio-examples/blob/main/1%20Design%20Guidelines/README.md) · [Examples](https://github.com/basslet/haptics-studio-examples/blob/main/2%20Design%20Examples/README.md) · [Code](https://github.com/basslet/haptics-studio-examples/blob/main/3%20Integration%20%26%20Code%20Snippets/README.md) · [Knowledge](https://github.com/basslet/haptics-studio-examples/blob/main/4%20Knowledge%20Base/README.md) · [Skills](https://github.com/basslet/haptics-studio-examples/blob/main/5%20Skills/README.md) |
+| **General** | [Code of Conduct](CODE_OF_CONDUCT.md) · **▸ Contributing** · [License](LICENSE) · [Security](SECURITY.md) |
 
 # Contributing to Open Source Projects
 
@@ -103,5 +108,3 @@ available at https://www.contributor-covenant.org/version/1/4/code-of-conduct.ht
 
 For answers to common questions about this code of conduct, see
 https://www.contributor-covenant.org/faq
-
-[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)

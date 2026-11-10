@@ -1,4 +1,9 @@
-[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)
+| | |
+| :--- | :--- |
+| **Haptics Studio** | [Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) |
+| **Haptics SDK** | [Overview](https://github.com/basslet/haptics-sdk) |
+| **Haptics Studio Examples** | [Overview](https://github.com/basslet/haptics-studio-examples) · [Guidelines](https://github.com/basslet/haptics-studio-examples/blob/main/1%20Design%20Guidelines/README.md) · [Examples](https://github.com/basslet/haptics-studio-examples/blob/main/2%20Design%20Examples/README.md) · [Code](https://github.com/basslet/haptics-studio-examples/blob/main/3%20Integration%20%26%20Code%20Snippets/README.md) · [Knowledge](https://github.com/basslet/haptics-studio-examples/blob/main/4%20Knowledge%20Base/README.md) · [Skills](https://github.com/basslet/haptics-studio-examples/blob/main/5%20Skills/README.md) |
+| **General** | [Code of Conduct](CODE_OF_CONDUCT.md) · [Contributing](CONTRIBUTING.md) · [License](LICENSE) · **▸ Security** |
 
 # Security and Privacy
 
@@ -37,5 +42,3 @@ Limits of this statement:
 - It does not cover the companion apps in `companion/`, which the commands above do not search, or Meta's Quest app. The Quest project includes Unity and Meta's XR SDK, whose own reporting has not been audited.
 - The app's "Data Preferences" menu item offers no real choice: `hasConsent` is always true, and nothing is sent either way.
 - The app grants its own local pages every browser permission they request, so no permission prompt appears inside the app (`git grep -n "setPermissionRequestHandler" -- main/src`). Its main window shows only those local pages.
-
-[Getting Started](README.md) · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) · [Contributing](CONTRIBUTING.md) · [Haptics SDK](https://github.com/basslet/haptics-sdk) · [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples)
