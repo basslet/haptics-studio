@@ -118,8 +118,11 @@ yarn frontend:lint        # ESLint — frontend
 yarn main:lint            # ESLint — backend
 yarn frontend:typecheck   # TypeScript — frontend
 yarn main:typecheck       # TypeScript — backend
+yarn docs:lint            # Doc links and the navigation block on each page
 
 ```
+
+After adding a page, or an entry to the navigation block in `scripts/doc_nav.js`, run `node scripts/check_doc_links.js --fix`. It writes the block on every page.
 
 ### Testing
 
