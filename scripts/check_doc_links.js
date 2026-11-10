@@ -1,23 +1,36 @@
 #!/usr/bin/env node
-// check_doc_links.js: exit 0 when every repo path a doc names exists and every doc page starts with its navigation block.
+// check_doc_links.js (the same file in all three Haptics repositories, see doc_nav.js): exit 0 when every repo path a doc names exists and every doc page starts with its navigation block.
 // Checks relative markdown links and `backticked/paths` that start at a top-level repo directory,
 // in tracked *.md files and in comment lines of tracked source files.
 // Checks that each page a reader opens starts with the block doc_nav.js generates, has no second copy of it,
-// and has no old navigation line first or last. --fix writes the block and drops the others first.
-// shortcut: the block and old lines are found by their shape. A hand-edited block row without bold survives --fix,
-// a page's own table with the block's exact header is taken for a block, and an old line counts only first or last
-// on the page; match on the block's group names if a hand edit or an older branch hits one of these.
+// and has no old navigation line first or last. --fix replaces the block at the top and drops an old line first or
+// last; it never deletes a second copy of the block.
+// shortcut: found by shape. A page whose own table opens with the block's exact header loses it to --fix, and an old
+// line counts only first or last; match on the block's group names if a page or an older branch hits one of these.
 // shortcut: external URLs and #anchors are not fetched or checked; add that if broken web links keep slipping in.
 // shortcut: no Markdown parser. Links with a title, <angle brackets>, parentheses in the target, a leading / or a ?query,
-// fenced code lines, block-comment lines without a leading *, and docstring bodies are not read correctly; upgrade to a parser when one of them fires.
+// a raw space in a link target (Markdown shows no link), fenced code lines, block-comment lines without a leading *, and docstring bodies
+// are not read correctly; upgrade to a parser when one of them fires.
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { navBlock } = require('./doc_nav');
+const { navBlock, REPOS } = require('./doc_nav');
 
 const args = process.argv.slice(2);
 const fix = args.includes('--fix');
 const root = path.resolve(args.find((a) => a !== '--fix') || path.join(__dirname, '..'));
+// The repository this runs in, from its origin's name (any URL form, any case).
+// shortcut: a fork or local clone under another name is refused; add a name override if contributors need one.
+let origin = '';
+try {
+  // Credentials in the URL never reach the output: everything from // to the last @ goes.
+  origin = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: root, encoding: 'utf8', stdio: 'pipe' }).trim().replace(/\/\/.*@/, '//');
+} catch {} // no origin: refused below with the others
+const REPO = path.basename(origin, '.git').toLowerCase();
+if (!REPOS.includes(REPO)) {
+  console.error(`origin "${origin || 'none'}" is not ${REPOS.slice(0, -1).join(', ')} or ${REPOS.at(-1)}; run the lint in a clone of one of them`);
+  process.exit(1);
+}
 const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
 const topDirs = new Set(tracked.filter((f) => f.includes('/')).map((f) => f.split('/')[0]));
 const srcExt = /\.(ts|tsx|js|jsx|kt|java|swift|cs|py|sh|md)$/;
@@ -36,17 +49,11 @@ const navLine = /^\[[^\]]*\]\([^)]*\)( · \[[^\]]*\]\([^)]*\))+$/;
 const blockAt = (lines, i) => lines[i] === '| | |' && lines[i + 1] === '| :--- | :--- |';
 const fixHint = 'run node scripts/check_doc_links.js --fix';
 for (const file of pages) {
-  const block = navBlock(file);
+  const block = navBlock(file, REPO);
   let text = fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
   if (fix) {
-    const lines = text.split('\n');
-    for (let i = lines.length - 1; i >= 0; i--) {
-      if (!blockAt(lines, i)) continue;
-      let end = i + 2;
-      while (lines[end]?.startsWith('| **')) end++;
-      lines.splice(i, end - i);
-    }
-    const body = lines.join('\n').replace(/^\n+|\s+$/g, '').split('\n');
+    // Only a block at the top is replaced; a copy anywhere else is reported below, never deleted.
+    const body = text.replace(/^\| \| \|\n\| :--- \| :--- \|\n(\| \*\*.*\n)*/, '').replace(/^\n+|\s+$/g, '').split('\n');
     if (navLine.test(body[0].trim())) body.shift();
     if (navLine.test(body.at(-1)?.trim())) body.pop();
     text = `${block}\n\n${body.join('\n').replace(/^\n+|\s+$/g, '')}\n`;
@@ -58,7 +65,7 @@ for (const file of pages) {
     const what = text.startsWith('| | |') ? 'navigation block differs from the generated one' : 'no navigation block at the top';
     errors.push(`${file}:1: ${what}; ${fixHint}`);
   }
-  lines.forEach((l, i) => i > 0 && blockAt(lines, i) && errors.push(`${file}:${i + 1}: second navigation block; ${fixHint}`));
+  lines.forEach((l, i) => i > 0 && blockAt(lines, i) && errors.push(`${file}:${i + 1}: second navigation block; remove it by hand`));
   // The old line sat first and last on the page; elsewhere a line of links is the page's own.
   const filled = lines.flatMap((l, i) => (i >= top && l.trim() ? [i] : []));
   for (const i of new Set([filled[0], filled.at(-1)])) {
