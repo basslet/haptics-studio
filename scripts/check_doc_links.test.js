@@ -7,9 +7,10 @@ const os = require('os');
 const path = require('path');
 
 const script = path.join(__dirname, 'check_doc_links.js');
+const { navBlock } = require('./doc_nav');
 
-// Builds a throwaway git repo from { 'path': 'content' } and runs the lint on it.
-const lint = (files) => {
+// Builds a throwaway git repo from { 'path': 'content' }, runs the lint on it with args, and returns the files as they end.
+const lint = (files, ...args) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'doclinks-'));
   for (const [f, content] of Object.entries(files)) {
     fs.mkdirSync(path.dirname(path.join(dir, f)), { recursive: true });
@@ -18,15 +19,24 @@ const lint = (files) => {
   const env = { ...process.env, HOME: dir }; // no global git config
   execFileSync('git', ['init', '-q'], { cwd: dir, env });
   execFileSync('git', ['add', '-A'], { cwd: dir, env });
-  const r = spawnSync('node', [script, dir], { encoding: 'utf8', env: { ...process.env, HOME: dir } });
+  const r = spawnSync('node', [script, dir, ...args], { encoding: 'utf8', env: { ...process.env, HOME: dir } });
+  r.files = Object.fromEntries(Object.keys(files).map((f) => [f, fs.readFileSync(path.join(dir, f), 'utf8')]));
   fs.rmSync(dir, { recursive: true, force: true });
   return r;
 };
 
-const ok = { 'companion/ios/a.txt': 'x' };
+// A page as the generator writes it.
+const page = (f, body) => `${navBlock(f)}\n\n${body}\n`;
+// Every page the navigation block links in this repository, so its links resolve.
+const site = Object.fromEntries(
+  ['README.md', 'docs/design-and-integration.md', 'docs/architecture.md', 'CODE_OF_CONDUCT.md', 'CONTRIBUTING.md', 'SECURITY.md'].map(
+    (f) => [f, page(f, '# Page')],
+  ),
+);
+const ok = { ...site, LICENSE: 'MIT', 'companion/ios/a.txt': 'x' };
 
 test('passes when links and paths exist', () => {
-  const r = lint({ ...ok, 'README.md': 'See [ios](companion/ios/a.txt) and `companion/ios/`.' });
+  const r = lint({ ...ok, 'README.md': page('README.md', 'See [ios](companion/ios/a.txt) and `companion/ios/`.') });
   assert.strictEqual(r.status, 0, r.stderr);
 });
 
@@ -59,6 +69,50 @@ test('names the line for a malformed percent-escape instead of crashing', () => 
 });
 
 test('ignores backticked text that does not start at a repo directory', () => {
-  const r = lint({ ...ok, 'README.md': 'Send `application/json` and `text/plain`.' });
+  const r = lint({ ...ok, 'README.md': page('README.md', 'Send `application/json` and `text/plain`.') });
   assert.strictEqual(r.status, 0, r.stderr);
+});
+
+test('navigation block: a good page passes; a missing block, a wrong marker and a leftover bottom line fail', () => {
+  const r = lint({
+    ...ok,
+    'docs/building.md': page('docs/building.md', '# Building\n\n[a](architecture.md) · [b](design-and-integration.md)\n\nEnd.'),
+    'main/README.md': '# Main',
+    'docs/design-and-integration.md': page('docs/architecture.md', '# Design'),
+    'SECURITY.md': page('SECURITY.md', '# Security\n\n[Getting Started](README.md) · [Architecture](docs/architecture.md)'),
+    'CONTRIBUTING.md': page('CONTRIBUTING.md', `# Contributing\n\n${navBlock('CONTRIBUTING.md')}`),
+    'AGENTS.md': '# Agents',
+    'docs/journal/STATUS.md': '# Status',
+  });
+  assert.strictEqual(r.status, 1);
+  assert.match(r.stderr, /^main\/README\.md:1: no navigation block at the top/m);
+  assert.match(r.stderr, /^docs\/design-and-integration\.md:1: navigation block differs from the generated one/m);
+  assert.match(r.stderr, /^SECURITY\.md:10: leftover navigation line/m);
+  assert.match(r.stderr, /^CONTRIBUTING\.md:10: second navigation block/m);
+  assert.doesNotMatch(r.stderr, /building|AGENTS|journal|broken link/);
+  // Written by hand, so a generator bug cannot pass by agreeing with itself.
+  assert.match(
+    navBlock('docs/building.md'),
+    /^\| \*\*Haptics Studio\*\* \| \*\*▸ Getting Started\*\* · \[Design & Integration\]\(design-and-integration\.md\) · \[Architecture\]\(architecture\.md\) \|$/m,
+  );
+  assert.match(navBlock('companion/ios/README.md'), / · \[License\]\(\.\.\/\.\.\/LICENSE\) · /);
+  for (const [, url] of navBlock('README.md').matchAll(/\]\((https:[^)]+)\)/g)) {
+    assert.match(url, /^https:\/\/github\.com\/basslet\/[\w-]+(\/blob\/main\/.+)?$/, 'another repository is linked on its default branch');
+  }
+});
+
+test('--fix puts the block at the top, drops old navigation and keeps the body', () => {
+  const old = '[Getting Started](../README.md) · [Architecture](architecture.md)';
+  const body = '# Building\n\n| | |\n| --- | --- |\n| Key | Value |\n\n[a](architecture.md) · [b](design-and-integration.md)\n\nText.';
+  const r = lint(
+    {
+      ...ok,
+      'docs/building.md': `${old}\n\n${body}\n\n${old}\n\n`,
+      'docs/architecture.md': page('docs/architecture.md', `# Architecture\n\n${navBlock('README.md')}`).replace(/\n/g, '\r\n'),
+    },
+    '--fix',
+  );
+  assert.strictEqual(r.status, 0, r.stderr);
+  assert.strictEqual(r.files['docs/building.md'], page('docs/building.md', body));
+  assert.strictEqual(r.files['docs/architecture.md'], page('docs/architecture.md', '# Architecture'));
 });
