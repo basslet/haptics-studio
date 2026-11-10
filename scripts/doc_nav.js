@@ -2,22 +2,23 @@
 // (layout C of basslet/haptics-studio#32). The same file in basslet/haptics-studio, basslet/haptics-sdk and
 // basslet/haptics-studio-examples: change it in one, copy it to the other two, then run
 // `node scripts/doc_nav.js --compare [branch]`, which names every repository whose copy on that branch (main) differs.
-// List an entry only once its page is on its repository's main.
+// List an entry only once its page exists; mark it 'local' while the page is not on its repository's main yet.
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path').posix;
 
 const REPOS = ['haptics-studio', 'haptics-sdk', 'haptics-studio-examples'];
 
-// [group, repository (null: the page's own), [[label, path from that repository's root]]].
+// [group, repository (null: the page's own), [[label, path from that repository's root, 'local'?]]].
+// A 'local' entry shows only on its own repository's pages: a page not on main yet, or an SDK sub-point (#32).
 const NAV = [
   [
     'Haptics Studio',
     'haptics-studio',
     [
       ['Getting Started', 'README.md'],
-      ['Design & Integration', 'docs/design-and-integration.md'],
-      ['Architecture', 'docs/architecture.md'],
+      ['Design & Integration', 'docs/design-and-integration.md', 'local'],
+      ['Architecture', 'docs/architecture.md', 'local'],
     ],
   ],
   ['Haptics SDK', 'haptics-sdk', [['Overview', 'README.md']]],
@@ -61,11 +62,12 @@ const navBlock = (page, repo) => {
   const here = ancestors.find((p) => own.includes(p));
   const rows = NAV.map(([group, r, entries]) => {
     const target = r ?? repo;
+    const shown = target === repo ? entries : entries.filter(([, , local]) => !local);
     const entry = ([label, p]) => {
       if (target !== repo) return `[${label}](https://github.com/basslet/${target}${p === 'README.md' ? '' : `/blob/main/${encode(p)}`})`;
       return p === here ? `**▸ ${label}**` : `[${label}](${encode(path.relative(path.dirname(page), p))})`;
     };
-    return `| **${group}** | ${entries.map(entry).join(' · ')} |`;
+    return `| **${group}** | ${shown.map(entry).join(' · ')} |`;
   });
   return ['| | |', '| :--- | :--- |', ...rows].join('\n');
 };

@@ -14,7 +14,8 @@ test('marks the page or its nearest ancestor README, links within the repository
     ios,
     /^\| \*\*Haptics Studio Examples\*\* \| \[Overview\]\(\.\.\/\.\.\/README\.md\) · \*\*▸ Guidelines\*\* · \[Examples\]\(\.\.\/\.\.\/2%20Design%20Examples\/README\.md\) · \[Code\]\(\.\.\/\.\.\/3%20Integration%20%26%20Code%20Snippets\/README\.md\) · /m,
   );
-  assert.match(ios, /\[Getting Started\]\(https:\/\/github\.com\/basslet\/haptics-studio\) · \[Design & Integration\]\(https:\/\/github\.com\/basslet\/haptics-studio\/blob\/main\/docs\/design-and-integration\.md\)/);
+  // Design & Integration and Architecture are not on Studio's main yet, so only Studio's own pages list them.
+  assert.match(ios, /^\| \*\*Haptics Studio\*\* \| \[Getting Started\]\(https:\/\/github\.com\/basslet\/haptics-studio\) \|$/m);
   assert.match(ios, /^\| \*\*General\*\* \| \[Code of Conduct\]\(\.\.\/\.\.\/CODE_OF_CONDUCT\.md\) · /m);
   assert.match(
     navBlock('docs/building.md', 'haptics-studio'),
