@@ -4,6 +4,9 @@
 // in tracked *.md files and in comment lines of tracked source files.
 // Checks that each page a reader opens starts with the block doc_nav.js generates, has no second copy of it,
 // and has no old navigation line first or last. --fix writes the block and drops the others first.
+// shortcut: the block and old lines are found by their shape. A hand-edited block row without bold survives --fix,
+// a page's own table with the block's exact header is taken for a block, and an old line counts only first or last
+// on the page; match on the block's group names if a hand edit or an older branch hits one of these.
 // shortcut: external URLs and #anchors are not fetched or checked; add that if broken web links keep slipping in.
 // shortcut: no Markdown parser. Links with a title, <angle brackets>, parentheses in the target, a leading / or a ?query,
 // fenced code lines, block-comment lines without a leading *, and docstring bodies are not read correctly; upgrade to a parser when one of them fires.
