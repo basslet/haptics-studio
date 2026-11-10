@@ -2,8 +2,8 @@
 // check_doc_links.js: exit 0 when every repo path a doc names exists and every doc page starts with its navigation block.
 // Checks relative markdown links and `backticked/paths` that start at a top-level repo directory,
 // in tracked *.md files and in comment lines of tracked source files.
-// Checks that each page a reader opens starts with the block doc_nav.js generates and has no old navigation line.
-// --fix writes the block and drops old navigation lines first.
+// Checks that each page a reader opens starts with the block doc_nav.js generates, has no second copy of it,
+// and has no old navigation line first or last. --fix writes the block and drops the others first.
 // shortcut: external URLs and #anchors are not fetched or checked; add that if broken web links keep slipping in.
 // shortcut: no Markdown parser. Links with a title, <angle brackets>, parentheses in the target, a leading / or a ?query,
 // fenced code lines, block-comment lines without a leading *, and docstring bodies are not read correctly; upgrade to a parser when one of them fires.
@@ -25,26 +25,42 @@ const errors = [];
 
 // Pages a reader opens: not the agent notes, the journal, or the release notes the app shows.
 const pages = tracked.filter(
-  (f) => f.endsWith('.md') && !/^(AGENTS\.md|release-notes\.md|docs\/journal\/)/.test(f) && fs.existsSync(path.join(root, f)),
+  (f) => f.endsWith('.md') && !/(^|\/)AGENTS\.md$|^release-notes\.md$|^docs\/journal\//.test(f) && fs.existsSync(path.join(root, f)),
 );
-// Links joined by " · ": the navigation line pages carried before the block.
+// Links joined by " · ": the navigation line pages carried first and last before the block.
 const navLine = /^\[[^\]]*\]\([^)]*\)( · \[[^\]]*\]\([^)]*\))+$/;
+// Where a copy of the block starts; its exact header, so a table of the page's own is not taken for it.
+const blockAt = (lines, i) => lines[i] === '| | |' && lines[i + 1] === '| :--- | :--- |';
 const fixHint = 'run node scripts/check_doc_links.js --fix';
 for (const file of pages) {
   const block = navBlock(file);
-  let text = fs.readFileSync(path.join(root, file), 'utf8');
+  let text = fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
   if (fix) {
     const lines = text.split('\n');
-    if (lines[0] === '| | |') while (lines[0]?.startsWith('|')) lines.shift();
-    const body = lines.filter((l) => !navLine.test(l.trim())).join('\n');
-    text = `${block}\n\n${body.replace(/^\n+|\s+$/g, '')}\n`;
+    for (let i = lines.length - 1; i >= 0; i--) {
+      if (!blockAt(lines, i)) continue;
+      let end = i + 2;
+      while (lines[end]?.startsWith('| **')) end++;
+      lines.splice(i, end - i);
+    }
+    const body = lines.join('\n').replace(/^\n+|\s+$/g, '').split('\n');
+    if (navLine.test(body[0].trim())) body.shift();
+    if (navLine.test(body.at(-1)?.trim())) body.pop();
+    text = `${block}\n\n${body.join('\n').replace(/^\n+|\s+$/g, '')}\n`;
     fs.writeFileSync(path.join(root, file), text);
   }
-  if (!text.startsWith(`${block}\n\n`)) {
+  const lines = text.split('\n');
+  const top = text.startsWith(`${block}\n\n`) ? block.split('\n').length : 0;
+  if (!top) {
     const what = text.startsWith('| | |') ? 'navigation block differs from the generated one' : 'no navigation block at the top';
     errors.push(`${file}:1: ${what}; ${fixHint}`);
   }
-  text.split('\n').forEach((l, i) => navLine.test(l.trim()) && errors.push(`${file}:${i + 1}: leftover navigation line; ${fixHint}`));
+  lines.forEach((l, i) => i > 0 && blockAt(lines, i) && errors.push(`${file}:${i + 1}: second navigation block; ${fixHint}`));
+  // The old line sat first and last on the page; elsewhere a line of links is the page's own.
+  const filled = lines.flatMap((l, i) => (i >= top && l.trim() ? [i] : []));
+  for (const i of new Set([filled[0], filled.at(-1)])) {
+    if (navLine.test(lines[i]?.trim())) errors.push(`${file}:${i + 1}: leftover navigation line; ${fixHint}`);
+  }
 }
 
 for (const file of tracked.filter((f) => srcExt.test(f) && fs.existsSync(path.join(root, f)))) {

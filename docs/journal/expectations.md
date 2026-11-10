@@ -8,3 +8,4 @@
 | `SECURITY.md` lists every destination a running build contacts, on macOS and Windows, including whether the Windows spell-check dictionary download happens. | A traffic capture showing another host. | Traffic capture of a running build on each platform |
 | The Report a vulnerability button appears once the repository is public and the feature is on. | The command in the next column not showing enabled. | `gh api repos/basslet/haptics-studio/private-vulnerability-reporting` |
 | GitHub keeps the Code of conduct entry for the pointer file. | A null `.files.code_of_conduct` once `CODE_OF_CONDUCT.md` is the pointer. Run it then, and delete this row. | `gh api repos/basslet/haptics-studio/community/profile` |
+| Every link in the navigation block to the SDK and Examples opens for a reader who is not signed in. | A 404 for any of them. | Each URL in `scripts/doc_nav.js`, opened signed out once the three repositories are public |

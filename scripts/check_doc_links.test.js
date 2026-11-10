@@ -76,10 +76,11 @@ test('ignores backticked text that does not start at a repo directory', () => {
 test('navigation block: a good page passes; a missing block, a wrong marker and a leftover bottom line fail', () => {
   const r = lint({
     ...ok,
-    'docs/building.md': page('docs/building.md', '# Building'),
+    'docs/building.md': page('docs/building.md', '# Building\n\n[a](architecture.md) · [b](design-and-integration.md)\n\nEnd.'),
     'main/README.md': '# Main',
     'docs/design-and-integration.md': page('docs/architecture.md', '# Design'),
     'SECURITY.md': page('SECURITY.md', '# Security\n\n[Getting Started](README.md) · [Architecture](docs/architecture.md)'),
+    'CONTRIBUTING.md': page('CONTRIBUTING.md', `# Contributing\n\n${navBlock('CONTRIBUTING.md')}`),
     'AGENTS.md': '# Agents',
     'docs/journal/STATUS.md': '# Status',
   });
@@ -87,6 +88,7 @@ test('navigation block: a good page passes; a missing block, a wrong marker and 
   assert.match(r.stderr, /^main\/README\.md:1: no navigation block at the top/m);
   assert.match(r.stderr, /^docs\/design-and-integration\.md:1: navigation block differs from the generated one/m);
   assert.match(r.stderr, /^SECURITY\.md:10: leftover navigation line/m);
+  assert.match(r.stderr, /^CONTRIBUTING\.md:10: second navigation block/m);
   assert.doesNotMatch(r.stderr, /building|AGENTS|journal|broken link/);
   // Written by hand, so a generator bug cannot pass by agreeing with itself.
   assert.match(
@@ -99,9 +101,18 @@ test('navigation block: a good page passes; a missing block, a wrong marker and 
   }
 });
 
-test('--fix puts the block at the top and drops the old top and bottom lines', () => {
+test('--fix puts the block at the top, drops old navigation and keeps the body', () => {
   const old = '[Getting Started](../README.md) · [Architecture](architecture.md)';
-  const r = lint({ ...ok, 'docs/building.md': `${old}\n\n# Building\n\nText.\n\n${old}\n\n` }, '--fix');
+  const body = '# Building\n\n| | |\n| --- | --- |\n| Key | Value |\n\n[a](architecture.md) · [b](design-and-integration.md)\n\nText.';
+  const r = lint(
+    {
+      ...ok,
+      'docs/building.md': `${old}\n\n${body}\n\n${old}\n\n`,
+      'docs/architecture.md': page('docs/architecture.md', `# Architecture\n\n${navBlock('README.md')}`).replace(/\n/g, '\r\n'),
+    },
+    '--fix',
+  );
   assert.strictEqual(r.status, 0, r.stderr);
-  assert.strictEqual(r.files['docs/building.md'], page('docs/building.md', '# Building\n\nText.'));
+  assert.strictEqual(r.files['docs/building.md'], page('docs/building.md', body));
+  assert.strictEqual(r.files['docs/architecture.md'], page('docs/architecture.md', '# Architecture'));
 });
