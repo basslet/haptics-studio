@@ -9,4 +9,4 @@
 | The README's feature list says ".wav or .mp3" and `docs/architecture.md` says ".wav/.mp3", while First Steps lists more formats. | `README.md`, `docs/architecture.md` | The next edit of those pages |
 | `docs/design-and-integration.md` has engineer text (the Method column, "Rust NAPI binding") on a page designers read. | `docs/design-and-integration.md` | The next edit of that page |
 | The navigation block lists only the SDK's Overview, because its Getting Started and Documentation pages are not on the SDK's `main` yet. | `scripts/doc_nav.js` | When those pages reach the SDK's `main` |
-| `yarn docs:lint` does not fetch the navigation block's links to the SDK and Examples, so a page moved or renamed there breaks them unnoticed. | `scripts/doc_nav.js` | When a page moves in either repository, or when the three repositories share one generator (#32) |
+| Nothing runs `node scripts/doc_nav.js --compare` on its own, so a copy left stale in one repository goes unnoticed until someone runs it. | `scripts/doc_nav.js`, CI | When the three repositories are public: run it daily in CI, which then needs no token |

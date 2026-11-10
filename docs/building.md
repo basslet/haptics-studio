@@ -122,7 +122,7 @@ yarn docs:lint            # Doc links and the navigation block on each page
 
 ```
 
-After adding a page, or an entry to the navigation block in `scripts/doc_nav.js`, run `node scripts/check_doc_links.js --fix`. It writes the block on every page.
+After adding a page, or an entry to the navigation block in `scripts/doc_nav.js`, run `node scripts/check_doc_links.js --fix`. It writes the block on every page. `scripts/doc_nav.js` is the same file in Haptics Studio, the Haptics SDK and Haptics Studio Examples: copy a change to the other two, and `node scripts/doc_nav.js --compare` names each repository whose copy on `main` differs.
 
 ### Testing
 

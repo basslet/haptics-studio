@@ -15,6 +15,8 @@ const fs = require('fs');
 const path = require('path');
 const { navBlock } = require('./doc_nav');
 
+const REPO = 'haptics-studio'; // the repository this copy of the check runs in
+
 const args = process.argv.slice(2);
 const fix = args.includes('--fix');
 const root = path.resolve(args.find((a) => a !== '--fix') || path.join(__dirname, '..'));
@@ -36,7 +38,7 @@ const navLine = /^\[[^\]]*\]\([^)]*\)( · \[[^\]]*\]\([^)]*\))+$/;
 const blockAt = (lines, i) => lines[i] === '| | |' && lines[i + 1] === '| :--- | :--- |';
 const fixHint = 'run node scripts/check_doc_links.js --fix';
 for (const file of pages) {
-  const block = navBlock(file);
+  const block = navBlock(file, REPO);
   let text = fs.readFileSync(path.join(root, file), 'utf8').replace(/\r\n/g, '\n');
   if (fix) {
     const lines = text.split('\n');

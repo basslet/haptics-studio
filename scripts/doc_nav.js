@@ -1,34 +1,41 @@
-// doc_nav.js: the navigation block every documentation page starts with (layout C of basslet/haptics-studio#32).
-// List an entry only once its page exists. Links into another repository point at its default branch.
+// doc_nav.js: the navigation block every documentation page of the three Haptics repositories starts with
+// (layout C of basslet/haptics-studio#32). The same file in basslet/haptics-studio, basslet/haptics-sdk and
+// basslet/haptics-studio-examples: change it in one, copy it to the other two, then run
+// `node scripts/doc_nav.js --compare [branch]`, which names every repository whose copy on that branch (main) differs.
+// List an entry only once its page is on its repository's main.
+const { execFileSync } = require('child_process');
+const fs = require('fs');
 const path = require('path').posix;
 
-const SDK = 'https://github.com/basslet/haptics-sdk';
-const EXAMPLES = 'https://github.com/basslet/haptics-studio-examples';
+const REPOS = ['haptics-studio', 'haptics-sdk', 'haptics-studio-examples'];
 
-// [group, [[label, target]]]: a target is a path in this repository or a URL.
+// [group, repository (null: the page's own), [[label, path from that repository's root]]].
 const NAV = [
   [
     'Haptics Studio',
+    'haptics-studio',
     [
       ['Getting Started', 'README.md'],
       ['Design & Integration', 'docs/design-and-integration.md'],
       ['Architecture', 'docs/architecture.md'],
     ],
   ],
-  ['Haptics SDK', [['Overview', SDK]]],
+  ['Haptics SDK', 'haptics-sdk', [['Overview', 'README.md']]],
   [
     'Haptics Studio Examples',
+    'haptics-studio-examples',
     [
-      ['Overview', EXAMPLES],
-      ['Guidelines', `${EXAMPLES}/blob/main/1%20Design%20Guidelines/README.md`],
-      ['Examples', `${EXAMPLES}/blob/main/2%20Design%20Examples/README.md`],
-      ['Code', `${EXAMPLES}/blob/main/3%20Integration%20%26%20Code%20Snippets/README.md`],
-      ['Knowledge', `${EXAMPLES}/blob/main/4%20Knowledge%20Base/README.md`],
-      ['Skills', `${EXAMPLES}/blob/main/5%20Skills/README.md`],
+      ['Overview', 'README.md'],
+      ['Guidelines', '1 Design Guidelines/README.md'],
+      ['Examples', '2 Design Examples/README.md'],
+      ['Code', '3 Integration & Code Snippets/README.md'],
+      ['Knowledge', '4 Knowledge Base/README.md'],
+      ['Skills', '5 Skills/README.md'],
     ],
   ],
   [
     'General',
+    null,
     [
       ['Code of Conduct', 'CODE_OF_CONDUCT.md'],
       ['Contributing', 'CONTRIBUTING.md'],
@@ -38,22 +45,58 @@ const NAV = [
   ],
 ];
 
-const isUrl = (target) => target.startsWith('https:');
+const encode = (p) => p.split('/').map(encodeURIComponent).join('/');
 
-// The block for `page`, a path from the repository root. The page's own entry, or else that of the nearest
-// ancestor README with one, is bold, marked ▸ and not a link; other paths are relative to the page.
-const navBlock = (page) => {
-  const own = NAV.flatMap(([, entries]) => entries.map(([, target]) => target)).filter((t) => !isUrl(t));
+// The block for `page`, a path from the root of `repo`. The page's own entry, or else that of the nearest ancestor
+// README with one, is bold, marked ▸ and not a link. Links within `repo` are relative to the page; links into another
+// repository go to its main branch, and to its root for its README.
+const navBlock = (page, repo) => {
+  if (!REPOS.includes(repo)) throw new Error(`unknown repository ${repo}`);
+  const own = NAV.flatMap(([, r, entries]) => ((r ?? repo) === repo ? entries.map(([, p]) => p) : []));
   const ancestors = [page];
   for (let dir = path.dirname(page); ; dir = path.dirname(dir)) {
     ancestors.push(path.join(dir, 'README.md'));
     if (dir === '.') break;
   }
   const here = ancestors.find((p) => own.includes(p));
-  const entry = ([label, target]) =>
-    target === here ? `**▸ ${label}**` : `[${label}](${isUrl(target) ? target : path.relative(path.dirname(page), target)})`;
-  const rows = NAV.map(([group, entries]) => `| **${group}** | ${entries.map(entry).join(' · ')} |`);
+  const rows = NAV.map(([group, r, entries]) => {
+    const target = r ?? repo;
+    const entry = ([label, p]) => {
+      if (target !== repo) return `[${label}](https://github.com/basslet/${target}${p === 'README.md' ? '' : `/blob/main/${encode(p)}`})`;
+      return p === here ? `**▸ ${label}**` : `[${label}](${encode(path.relative(path.dirname(page), p))})`;
+    };
+    return `| **${group}** | ${entries.map(entry).join(' · ')} |`;
+  });
   return ['| | |', '| :--- | :--- |', ...rows].join('\n');
 };
+
+// Compares this file with the copy on `ref` of each repository; gh must be signed in while they are private.
+const compare = (ref) => {
+  const mine = fs.readFileSync(__filename, 'utf8').replace(/\r\n/g, '\n');
+  let same = true;
+  for (const repo of REPOS) {
+    let problem = null;
+    try {
+      const url = `repos/basslet/${repo}/contents/scripts/doc_nav.js?ref=${encodeURIComponent(ref)}`;
+      const theirs = execFileSync('gh', ['api', '-H', 'Accept: application/vnd.github.raw', url], { encoding: 'utf8', stdio: 'pipe' });
+      if (theirs.replace(/\r\n/g, '\n') !== mine) problem = 'differs from this copy';
+    } catch (e) {
+      problem = `cannot be read: ${String(e.stderr || e.message).trim().split('\n')[0]}`;
+    }
+    if (problem) {
+      console.error(`${repo}: scripts/doc_nav.js on ${ref} ${problem}`);
+      same = false;
+    }
+  }
+  return same;
+};
+
+if (require.main === module) {
+  if (process.argv[2] !== '--compare') {
+    console.error('usage: node scripts/doc_nav.js --compare [branch]');
+    process.exit(2);
+  }
+  process.exit(compare(process.argv[3] || 'main') ? 0 : 1);
+}
 
 module.exports = { navBlock };
