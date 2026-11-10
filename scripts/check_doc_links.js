@@ -14,13 +14,22 @@
 const { execFileSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
-const { navBlock } = require('./doc_nav');
+const { navBlock, REPOS } = require('./doc_nav');
 
 const args = process.argv.slice(2);
 const fix = args.includes('--fix');
 const root = path.resolve(args.find((a) => a !== '--fix') || path.join(__dirname, '..'));
-// The repository this runs in, from its origin; navBlock rejects any other name.
-const REPO = path.basename(execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: root, encoding: 'utf8' }).trim(), '.git');
+// The repository this runs in, from its origin's name (any URL form, any case).
+// shortcut: a fork or local clone under another name is refused; add a name override if contributors need one.
+let origin = '';
+try {
+  origin = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: root, encoding: 'utf8', stdio: 'pipe' }).trim();
+} catch {} // no origin: refused below with the others
+const REPO = path.basename(origin, '.git').toLowerCase();
+if (!REPOS.includes(REPO)) {
+  console.error(`origin "${origin || 'none'}" is not ${REPOS.slice(0, -1).join(', ')} or ${REPOS.at(-1)}; run the lint in a clone of one of them`);
+  process.exit(1);
+}
 const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
 const topDirs = new Set(tracked.filter((f) => f.includes('/')).map((f) => f.split('/')[0]));
 const srcExt = /\.(ts|tsx|js|jsx|kt|java|swift|cs|py|sh|md)$/;

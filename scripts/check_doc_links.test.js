@@ -108,3 +108,17 @@ test('--fix replaces the block at the top, drops old navigation and keeps the bo
   assert.strictEqual(r.files['docs/building.md'], page('docs/building.md', body));
   assert.strictEqual(r.files['docs/architecture.md'], page('docs/architecture.md', '# Architecture'));
 });
+
+test('stops with one line when the origin is not one of the three repositories', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'doclinks-'));
+  const env = { ...process.env, HOME: dir };
+  execFileSync('git', ['init', '-q'], { cwd: dir, env });
+  const run = () => spawnSync('node', [script, dir], { encoding: 'utf8', env });
+  const none = run();
+  execFileSync('git', ['remote', 'add', 'origin', 'git@github.com:someone/Haptics-SDK.git'], { cwd: dir, env });
+  const ssh = run();
+  fs.rmSync(dir, { recursive: true, force: true });
+  assert.strictEqual(none.status, 1);
+  assert.strictEqual(none.stderr, 'origin "none" is not haptics-studio, haptics-sdk or haptics-studio-examples; run the lint in a clone of one of them\n');
+  assert.strictEqual(ssh.status, 0, ssh.stderr);
+});

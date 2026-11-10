@@ -97,4 +97,4 @@ if (require.main === module) {
   process.exit(differs.length ? 1 : 0);
 }
 
-module.exports = { navBlock };
+module.exports = { navBlock, REPOS };
