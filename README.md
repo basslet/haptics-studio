@@ -8,7 +8,7 @@
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/logo-dark.png">
   <source media="(prefers-color-scheme: light)" srcset="./assets/logo-light.png">
-  <img alt="Haptics Studio" src="./assets/logo-light.png">
+  <img alt="Haptics Studio" src="./assets/logo-light.png" width="800">
 </picture>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
