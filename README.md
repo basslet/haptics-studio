@@ -60,20 +60,20 @@ Haptics Studio is built for macOS and Windows. Minimum versions will be listed h
 
 Previewing on a headset or phone needs a companion app; see [Companion apps](docs/design-and-integration/README.md#companion-apps).
 
-## Next Steps
+## First Step... help! I'm new to haptics
 
 - [Design & Integration](docs/design-and-integration/README.md): get started, learn the editor, and basic design and integration tips.
 - [Architecture](docs/architecture.md): the technology stack and the data architecture.
 
-## Help, I'm New to Haptics
-
-Teams that integrate haptics successfully in one app or game are likely to roll it out in all their titles. The challenge is not the work per title; it is the one-time setup in your workflow and tech stack. Start with [Getting Started](docs/design-and-integration/getting-started.md) and the [Haptics Guidelines](docs/design-and-integration/haptics-guidelines.md).
+Start with [Getting Started](docs/design-and-integration/getting-started.md) and the [Haptics Guidelines](docs/design-and-integration/haptics-guidelines.md).
 
 > **Placeholder.** Links to in-depth guides in Haptics Studio Examples, such as accessibility, go here once those guides exist.
 
 ## About this Project
 
-The team behind the open-source Haptics Studio and Haptics SDK has worked on haptics since 2014.
+Teams who successfully integrated haptics once in one of their apps or games are likely to roll it out in all of their titles. Most app developers want to do the haptics work once and deploy it to all their supported platforms, providing a consistent UX for their entire user base.
+
+The team behind the open-source Haptics Studio and SDK have been working on a cross-platform haptics standard and tools since 2014.
 
 - Founded as Lofelt, the team built hardware and software for designing and playing back advanced haptics on mobile devices.
 - Lofelt joined Meta in 2022, matured the software and rolled it out alongside Meta Quest. In that time, gaming and VR studios used the suite extensively.
