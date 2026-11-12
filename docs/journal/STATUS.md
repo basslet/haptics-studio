@@ -1,6 +1,6 @@
 # Status
 
-The documentation restructure is tracked in #5.
+The documentation restructure is tracked in #5. Studio's pages are laid out (#38); the text of the Design & Integration subpages is written in #10.
 
 ## Before the Repository Opens
 
