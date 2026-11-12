@@ -7,7 +7,7 @@
 
 # Source Code
 
-How to build, run and test Haptics Studio from source, and where to start when you change it. How the parts fit together is in [Architecture](architecture.md); where the app stores its data is in [Application Data](../main/README.md#application-data), and the project and clip formats are in [Core Data Models](../shared/README.md#core-data-models).
+How to build, run and test Haptics Studio from source, and where to start when you change it. How the parts fit together is in [Architecture](architecture.md); where the app stores its data is in [Application Data](../main#application-data), and the project and clip formats are in [Core Data Models](../shared#core-data-models).
 
 ## Setup
 
@@ -171,6 +171,6 @@ If you need to add a new rendering target for preview within Studio (e.g., a new
 
 ### Add a New Companion App
 
-A companion app finds the desktop, pairs with it and receives clips through the protocol in [companion/README.md](../companion/README.md). Implement that protocol on the new platform, then play the clips with the Haptics SDK or the platform's own haptics API.
+A companion app finds the desktop, pairs with it and receives clips through the protocol in [`companion/`](../companion). Implement that protocol on the new platform, then play the clips with the Haptics SDK or the platform's own haptics API.
 
 The VR companion app (`companion/quest/`) and mobile examples (`companion/ios/`, `companion/android/`) are good references.

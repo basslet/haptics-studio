@@ -69,7 +69,7 @@ Companion apps play your clips on a real device while you edit them on the deskt
 | Device     | App                                                                                  |
 | :--------: | :----------------------------------------------------------------------------------: |
 | Meta Quest | [Download from Meta](https://www.meta.com/experiences/6759764157450104/)              |
-| iOS        | [Sample code](../../companion/ios/README.md), built with Xcode                           |
-| Android    | [Sample code](../../companion/android/README.md), built with Android Studio              |
+| iOS        | [Sample code](../../companion/ios), built with Xcode                           |
+| Android    | [Sample code](../../companion/android), built with Android Studio              |
 
-The iOS and Android apps have no store release, so using them today means building them yourself. How the apps talk to the desktop is in [companion/README.md](../../companion/README.md).
+The iOS and Android apps have no store release, so using them today means building them yourself. How the apps talk to the desktop is in [`companion/`](../../companion).

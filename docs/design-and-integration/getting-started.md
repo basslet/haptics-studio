@@ -32,7 +32,7 @@ _A companion app plays your clips on a phone or headset while you edit them on t
 <details>
 <summary><b>iOS and Android</b></summary>
 
-_Build the app from the [iOS](../../companion/ios/README.md) or [Android](../../companion/android/README.md) sample code, join the same network as the desktop, and pair._
+_Build the app from the [iOS](../../companion/ios) or [Android](../../companion/android) sample code, join the same network as the desktop, and pair._
 
 </details>
 
@@ -75,7 +75,7 @@ _Choosing a format for your target. The formats are listed once, in [Export Form
 
 ## Found a Bug?
 
-File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with your app version, your operating system and any logs; [Application Data](../../main/README.md#application-data) shows where the app keeps them.
+File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with your app version, your operating system and any logs; [Application Data](../../main#application-data) shows where the app keeps them.
 
 ## Next Steps
 

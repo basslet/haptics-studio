@@ -7,7 +7,7 @@
 
 # Architecture
 
-Details live next to the code: [main process](../main/README.md), [renderer](../frontend/README.md), [shared code and data models](../shared/README.md), [companion apps](../companion/README.md).
+Details live next to the code: [main process](../main), [renderer](../frontend), [shared code and data models](../shared), [companion apps](../companion).
 
 ## Architecture Overview
 
@@ -97,4 +97,4 @@ Haptics-Studio/
 
 ## Formats and Specifications
 
-The `.haptic` file format and the actuator configuration files (`.acf`) are specified in the Haptics SDK: [.haptic file specification](https://github.com/basslet/haptics-sdk/blob/main/resources/haptic-file-spec.md) and [ACF specification](https://github.com/basslet/haptics-sdk/blob/main/resources/acf/README.md).
+The `.haptic` file format and the actuator configuration files (`.acf`) are specified in the Haptics SDK: [.haptic file specification](https://github.com/basslet/haptics-sdk/blob/main/resources/haptic-file-spec.md) and [ACF specification](https://github.com/basslet/haptics-sdk/tree/main/resources/acf).

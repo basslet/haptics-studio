@@ -55,7 +55,7 @@ This open-source build contains no telemetry transmission; [SECURITY.md](SECURIT
 
 ## Help
 
-File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with your app version, your operating system and any logs; the [Application Data](main/README.md#application-data) table shows where the app keeps them. Haptics Studio is maintained by volunteers in their free time, so help is best effort, with no promised response time.
+File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with your app version, your operating system and any logs; the [Application Data](main#application-data) table shows where the app keeps them. Haptics Studio is maintained by volunteers in their free time, so help is best effort, with no promised response time.
 
 ## Related Projects
 

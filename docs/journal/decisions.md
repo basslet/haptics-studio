@@ -9,3 +9,4 @@
 - Haptic design guidance is split by depth. Studio's Haptics Guidelines page holds one page of guidance that applies on every platform; guidance for one platform, longer guides and worked examples live in Haptics Studio Examples. Studio's Resources page is the only list of outside documentation in the three repositories; the other two link to it.
 - Text that draws on Meta's documentation is written in this project's own words. Images taken from Meta's pages are placeholders until they are replaced.
 - Studio's documentation has no troubleshooting pages. Bugs go to GitHub issues.
+- A link to a page that lives next to the code (a component `README.md`) points at its folder, so GitHub shows the code with the README below it. Such a page marks no entry in the navigation block (#42).
