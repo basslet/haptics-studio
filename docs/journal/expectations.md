@@ -2,7 +2,6 @@
 
 | Claim | Disproved by | Where to look |
 |---|---|---|
-| First Steps work as written for `.wav`, `.mp3`, `.ogg`, `.aiff` and `.aif` in a built app. | A format or step failing. | A built app, following `README.md` |
 | Meta's published Quest app pairs with a build of this source and plays a clip. | A failed pairing. | A Quest headset and a built app |
 | USB preview works for Quest with no network. | No connection. | A Quest headset over USB, network off |
 | `SECURITY.md` lists every destination a running build contacts, on macOS and Windows, including whether the Windows spell-check dictionary download happens. | A traffic capture showing another host. | Traffic capture of a running build on each platform |
