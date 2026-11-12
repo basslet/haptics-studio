@@ -70,4 +70,4 @@ By contributing, you agree that your contributions are licensed under the [LICEN
 
 ## Relationship to Meta
 
-Haptics Studio was created by the Meta Haptics team (formerly Lofelt) and released by Meta under the MIT license. This repository is an independent project, not affiliated with, endorsed by, or supported by Meta Platforms, Inc. Meta's internal process, its Contributor License Agreement and its bounty program do not apply here.
+This repository is independent of Meta; its origin is in [About this Project](README.md#about-this-project). Meta's internal process, its Contributor License Agreement and its bounty program do not apply here.

@@ -13,7 +13,7 @@
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A suite of a desktop application and companion apps for designing and managing advanced haptics across your software projects. The no-code visual editor generates haptics from audio, previews them in real time on phones and VR headsets, and exports to every major haptic format, all from one interface.
+A suite containing a desktop application and companion apps for designing and managing advanced haptics across your software projects. The no-code visual editor generates haptics from audio, previews them in real time on phones and VR headsets, and exports to every major haptic format, all from one interface.
 
 ![The Haptics Studio editor](assets/editor-overview.gif)
 
@@ -42,7 +42,7 @@ Previewing on a headset or phone needs a companion app; see [Companion apps](doc
 
 Start with [Getting Started](docs/design-and-integration/getting-started.md) and the [Haptics Guidelines](docs/design-and-integration/haptics-guidelines.md).
 
-We are expanding the documentation, with in-depth guides such as accessibility in [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples). Check back for more.
+We are expanding the documentation. In-depth guides, for example on accessibility, are planned for [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples). Check back for more.
 
 ## About this Project
 
@@ -50,7 +50,7 @@ Teams that get haptics right in one app or game tend to bring them to every titl
 
 - **Lofelt.** The team founded Lofelt in 2014, building hardware and software for designing and playing back advanced haptics on mobile devices.
 - **Meta.** Lofelt joined Meta in 2022. There the team matured the software and shipped it alongside Meta Quest, where gaming and VR studios used it extensively.
-- **Open source.** In 2025, Meta released Haptics Studio and the Haptics SDK as open source, opening them up to other platforms such as iOS and Android.
+- **Open source.** In 2025, Meta released Haptics Studio and the Haptics SDK as open source, opening them up beyond Meta Quest to platforms such as iOS and Android.
 
 Haptics Studio is the open-source project. [Meta Haptics Studio](https://developers.meta.com/horizon/resources/haptics-studio/) is a distribution of it, maintained and published by Meta with its own branding and documentation, much like Chromium and Google Chrome. This repository is not affiliated with, endorsed by, or supported by Meta Platforms, Inc.
 
