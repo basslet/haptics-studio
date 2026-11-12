@@ -11,7 +11,7 @@ Haptics documentation from the makers of each platform and tool. Which export fo
 
 ## Android
 
-- [Haptics with PWLE](https://source.android.com/docs/core/interaction/haptics/haptics-pwle) (Android Open Source Project). PWLE support in the Haptics SDK is in progress.
+- [Haptics with PWLE](https://source.android.com/docs/core/interaction/haptics/haptics-pwle) (Android Open Source Project)
 
 ## iOS
 

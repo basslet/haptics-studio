@@ -21,7 +21,7 @@ _The controls every haptic clip is made of. Each is a series of points over time
 
 ## Install Haptics Studio
 
-Download Haptics Studio from the [Releases](https://github.com/basslet/haptics-studio/releases) page.
+_Where to download: the [Releases](https://github.com/basslet/haptics-studio/releases) page._
 
 _First start on macOS and Windows, including the prompt to allow network access._
 
@@ -75,7 +75,7 @@ _Choosing a format for your target. The formats are listed once, in [Export Form
 
 ## Found a Bug?
 
-File a [GitHub issue](https://github.com/basslet/haptics-studio/issues).
+File a [GitHub issue](https://github.com/basslet/haptics-studio/issues) with your app version, your operating system and any logs; [Application Data](../../main/README.md#application-data) shows where the app keeps them.
 
 ## Next Steps
 

@@ -154,7 +154,7 @@ The frontend lives in `frontend/src/`. Start with the relevant component directo
 | Timeline                   | `components/editor/timeline/`   | `Timeline.tsx`, `TimelinePlot.tsx`                         |
 | Home screen                | `components/home/`              | `Landing.tsx`                                              |
 | Redux state                | `state/`                        | `store.ts`, `reducers.ts`, `selectors.ts`, `actions.ts`    |
-| Custom hooks               | `hooks/`                        | 22 hooks for editor interactions, audio playback, etc.     |
+| Custom hooks               | `hooks/`                        | Hooks for editor interactions, audio playback, etc.        |
 
 ### Add a New Export Format
 
@@ -171,13 +171,6 @@ If you need to add a new rendering target for preview within Studio (e.g., a new
 
 ### Add a New Companion App
 
-The companion app protocol is documented in [companion/README.md](../companion/README.md). To build a new companion app for a different platform:
-
-1.  Implement UDP broadcast listening on port 9998 to discover desktop instances.
-2.  Connect via Socket.IO to the discovered host on port 9999 with query params: `deviceId`, `name`, `model`, `version`.
-3.  Handle the pairing flow (`auth_required` → `auth_request` → `auth_granted`).
-4.  Listen for `clip_update` and `current_project` events to receive haptic data.
-5.  Request specific formats via `get_ahap`, `get_android`, or `get_clip` depending on your platform.
-6.  Use the Haptics SDK (or platform-native APIs) to play the received haptic data.
+A companion app finds the desktop, pairs with it and receives clips through the protocol in [companion/README.md](../companion/README.md). Implement that protocol on the new platform, then play the clips with the Haptics SDK or the platform's own haptics API.
 
 The VR companion app (`companion/quest/`) and mobile examples (`companion/ios/`, `companion/android/`) are good references.
