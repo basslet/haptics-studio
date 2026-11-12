@@ -7,7 +7,7 @@
 
 # Resources
 
-Haptics documentation from the makers of each platform and tool. This is the one list of outside documentation for Haptics Studio, the Haptics SDK and Haptics Studio Examples; other pages link here. Which export format suits each target is in [Export Formats](README.md#export-formats).
+Haptics documentation from the makers of each platform and tool. Which export format suits each target is in [Export Formats](README.md#export-formats).
 
 ## Android
 
