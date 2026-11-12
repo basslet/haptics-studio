@@ -15,31 +15,6 @@
 
 A suite of a desktop application and companion apps for designing and managing advanced haptics across your software projects. The no-code visual editor generates haptics from audio, previews them in real time on phones and VR headsets, and exports to every major haptic format, all from one interface.
 
-<table>
-  <tr>
-    <th align="left">Editor</th>
-    <td align="center"><img src="https://cdn.simpleicons.org/macos/888888" height="28" alt="macOS"><br>macOS</td>
-    <td align="center">Windows</td>
-  </tr>
-  <tr>
-    <th align="left">Platforms</th>
-    <td align="center"><a href="docs/design-and-integration/resources.md#android"><img src="https://cdn.simpleicons.org/android/888888" height="28" alt="Android"><br>Android docs</a></td>
-    <td align="center"><a href="docs/design-and-integration/resources.md#ios"><img src="https://cdn.simpleicons.org/ios/888888" height="28" alt="iOS"><br>iOS docs</a></td>
-    <td align="center"><a href="docs/design-and-integration/resources.md#meta-quest"><img src="https://cdn.simpleicons.org/meta/888888" height="28" alt="Meta Quest"><br>Meta Quest docs</a></td>
-    <td align="center"><a href="docs/design-and-integration/resources.md#playstation"><img src="https://cdn.simpleicons.org/playstation/888888" height="28" alt="PlayStation"><br>PlayStation</a></td>
-  </tr>
-  <tr>
-    <th align="left">Environments</th>
-    <td align="center"><a href="docs/design-and-integration/resources.md#unreal-engine"><img src="https://cdn.simpleicons.org/unrealengine/888888" height="28" alt="Unreal Engine"><br>Unreal docs</a></td>
-    <td align="center"><a href="docs/design-and-integration/resources.md#unity"><img src="https://cdn.simpleicons.org/unity/888888" height="28" alt="Unity"><br>Unity docs</a></td>
-    <td align="center"><a href="docs/design-and-integration/resources.md#fmod"><img src="https://cdn.simpleicons.org/fmod/888888" height="28" alt="FMOD"><br>FMOD docs</a></td>
-    <td align="center"><a href="docs/design-and-integration/resources.md#wwise"><img src="https://cdn.simpleicons.org/wwise/888888" height="28" alt="Wwise"><br>Wwise docs</a></td>
-    <td align="center"><a href="docs/design-and-integration/resources.md#openxr">OpenXR docs</a></td>
-  </tr>
-</table>
-
-<sub>Real-time preview runs on iOS, Android and Meta Quest. PlayStation plays exported PCM; there is no preview on PlayStation. Product names and logos are trademarks of their owners; Haptics Studio is not affiliated with or endorsed by them.</sub>
-
 ![The Haptics Studio editor](assets/editor-overview.gif)
 
 **One workspace** for your entire haptics process: design from scratch, or turn your audio assets into haptics for fast, expressive effects and intuitive UI feedback.
@@ -67,7 +42,7 @@ Previewing on a headset or phone needs a companion app; see [Companion apps](doc
 
 Start with [Getting Started](docs/design-and-integration/getting-started.md) and the [Haptics Guidelines](docs/design-and-integration/haptics-guidelines.md).
 
-> **Placeholder.** Links to in-depth guides in Haptics Studio Examples, such as accessibility, go here once those guides exist.
+We are expanding the documentation, with in-depth guides such as accessibility in [Haptics Studio Examples](https://github.com/basslet/haptics-studio-examples). Check back for more.
 
 ## About this Project
 
@@ -77,6 +52,6 @@ Teams that get haptics right in one app or game tend to bring them to every titl
 - **Meta.** Lofelt joined Meta in 2022. There the team matured the software and shipped it alongside Meta Quest, where gaming and VR studios used it extensively.
 - **Open source.** In 2025, Meta released Haptics Studio and the Haptics SDK as open source, opening them up to other platforms such as iOS and Android.
 
-Haptics Studio is the open-source project. [Meta Haptics Studio](https://developers.meta.com/horizon/resources/haptics-studio/) is a distribution of it, maintained and published by Meta with its own branding and documentation, much like Chromium and Google Chrome, or Code - OSS and Visual Studio Code. This repository is not affiliated with, endorsed by, or supported by Meta Platforms, Inc.
+Haptics Studio is the open-source project. [Meta Haptics Studio](https://developers.meta.com/horizon/resources/haptics-studio/) is a distribution of it, maintained and published by Meta with its own branding and documentation, much like Chromium and Google Chrome. This repository is not affiliated with, endorsed by, or supported by Meta Platforms, Inc.
 
 Daniel ([@basslet](https://github.com/basslet)), co-founder of Lofelt, maintains the project together with former Lofelt team members. For questions, or if you'd like to work with us, [open an issue](https://github.com/basslet/haptics-studio/issues).
