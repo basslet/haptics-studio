@@ -71,14 +71,12 @@ Start with [Getting Started](docs/design-and-integration/getting-started.md) and
 
 ## About this Project
 
-Teams who successfully integrated haptics once in one of their apps or games are likely to roll it out in all of their titles. Most app developers want to do the haptics work once and deploy it to all their supported platforms, providing a consistent UX for their entire user base.
+Teams that get haptics right in one app or game tend to bring them to every title they ship. What they want is to design haptics once, deploy them to every platform they support, and give their whole user base the same experience. That is what the team behind Haptics Studio and the Haptics SDK has been working on since 2014: a cross-platform haptics standard and the tools to use it.
 
-The team behind the open-source Haptics Studio and SDK have been working on a cross-platform haptics standard and tools since 2014.
+- **Lofelt.** The team founded Lofelt in 2014, building hardware and software for designing and playing back advanced haptics on mobile devices.
+- **Meta.** Lofelt joined Meta in 2022. There the team matured the software and shipped it alongside Meta Quest, where gaming and VR studios used it extensively.
+- **Open source.** In 2025, Meta released Haptics Studio and the Haptics SDK as open source, opening them up to other platforms such as iOS and Android.
 
-- Founded as Lofelt, the team built hardware and software for designing and playing back advanced haptics on mobile devices.
-- Lofelt joined Meta in 2022, matured the software and rolled it out alongside Meta Quest. In that time, gaming and VR studios used the suite extensively.
-- Meta open-sourced Haptics Studio and the Haptics SDK to open them up to other platforms, such as iOS and Android.
+Haptics Studio is the open-source project. [Meta Haptics Studio](https://developers.meta.com/horizon/resources/haptics-studio/) is a distribution of it, maintained and published by Meta with its own branding and documentation, much like Chromium and Google Chrome, or Code - OSS and Visual Studio Code. This repository is not affiliated with, endorsed by, or supported by Meta Platforms, Inc.
 
-Haptics Studio is the open-source project. Meta Haptics Studio (<https://developers.meta.com/horizon/resources/haptics-studio/>) is a distribution of this project maintained and published by Meta, with additional Meta branding and documentation. This is similar to the relationship between Chromium and Google Chrome, or Code - OSS and Visual Studio Code. This repository is not affiliated with, endorsed by, or supported by Meta Platforms, Inc.
-
-The project is maintained by Daniel ([@basslet](https://github.com/basslet)), former co-founder of Lofelt, and former Lofelt team members. If you have questions or want to collaborate, [open an issue](https://github.com/basslet/haptics-studio/issues).
+Daniel ([@basslet](https://github.com/basslet)), co-founder of Lofelt, maintains the project together with former Lofelt team members. For questions, or if you'd like to work with us, [open an issue](https://github.com/basslet/haptics-studio/issues).
