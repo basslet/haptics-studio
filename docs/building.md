@@ -7,7 +7,7 @@
 
 # Source Code
 
-How to build, run and test Haptics Studio from source, and where to start when you change it. How the parts fit together is in [Architecture](architecture.md); where the app stores its data is in [Application Data](../main#application-data), and the project and clip formats are in [Core Data Models](../shared#core-data-models).
+How to build, run and test Haptics Studio from source. Where to start when you change it is in [Contributing](../CONTRIBUTING.md#where-to-start-in-the-code). How the parts fit together is in [Architecture](architecture.md); where the app stores its data is in [Application Data](../main#application-data), and the project and clip formats are in [Core Data Models](../shared#core-data-models).
 
 ## Setup
 
@@ -137,40 +137,3 @@ yarn test:e2e:prepare:mac   # or test:e2e:prepare:win
 yarn test:e2e
 
 ```
-
-## Extending Studio
-
-We welcome contributions\! Here's where to look depending on what you'd like to do:
-
-### Add a New UI Feature
-
-The frontend lives in `frontend/src/`. Start with the relevant component directory:
-
-| Area                       | Directory                       | Key files                                                  |
-| :------------------------: | :-----------------------------: | :--------------------------------------------------------: |
-| Envelope editor            | `components/editor/envelope/`   | `HapticEnvelope.tsx`, `AudioEnvelope.tsx`, `PlotArea.tsx`  |
-| Clip list / navigator      | `components/editor/leftpanel/`  | `LeftPanel.tsx`, `Navigator.tsx`, `NavigatorClip.tsx`      |
-| Analysis & design controls | `components/editor/rightpanel/` | `RightPanel.tsx`, `AudioAnalyzer.tsx`, `DetailEditing.tsx` |
-| Timeline                   | `components/editor/timeline/`   | `Timeline.tsx`, `TimelinePlot.tsx`                         |
-| Home screen                | `components/home/`              | `Landing.tsx`                                              |
-| Redux state                | `state/`                        | `store.ts`, `reducers.ts`, `selectors.ts`, `actions.ts`    |
-| Custom hooks               | `hooks/`                        | Hooks for editor interactions, audio playback, etc.        |
-
-### Add a New Export Format
-
-1.  Define the format in `shared/ipc-types.ts` — add to the `ExportFormat` union type.
-2.  Implement the export logic in `main/src/common/utils/export.ts`.
-3.  Wire up the IPC handler in `main/src/listeners/clips/clipExport.ts`.
-4.  Add UI controls in `frontend/src/components/common/ExportDialog.tsx`.
-
-### Support a New Platform for Playback
-
-Runtime playback on new platforms is best handled in the Haptics SDK repository (<https://github.com/basslet/haptics-sdk>), not in Haptics Studio. The SDK is responsible for loading `.haptic` files and rendering them through each platform's native haptic API.
-
-If you need to add a new rendering target for preview within Studio (e.g., a new actuator profile), add an `.acf` file to `main/actuators/` and a render settings entry in `main/renderers/`.
-
-### Add a New Companion App
-
-A companion app finds the desktop, pairs with it and receives clips through the protocol in [`companion/`](../companion). Implement that protocol on the new platform, then play the clips with the Haptics SDK or the platform's own haptics API.
-
-The VR companion app (`companion/quest/`) and mobile examples (`companion/ios/`, `companion/android/`) are good references.
