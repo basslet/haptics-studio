@@ -40,7 +40,7 @@ A suite of a desktop application and companion apps for designing and managing a
 
 <sub>Real-time preview runs on iOS, Android and Meta Quest. PlayStation plays exported PCM; there is no preview on PlayStation. Product names and logos are trademarks of their owners; Haptics Studio is not affiliated with or endorsed by them.</sub>
 
-> **Placeholder.** An animation of the editor goes here.
+![The Haptics Studio editor turning an audio clip into haptics](assets/editor-overview.gif)
 
 *One workspace* for your entire haptics process: design from scratch, or turn your audio assets into haptics for fast, expressive effects and intuitive UI feedback.
 
