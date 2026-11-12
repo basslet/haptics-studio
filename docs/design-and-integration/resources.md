@@ -7,7 +7,7 @@
 
 # Resources
 
-Haptics documentation from the makers of each platform and tool. Which export format suits each target is in [Export Formats](README.md#export-formats).
+Haptics documentation for each platform and tool; each link names who publishes it. Which export format suits each target is in [Export Formats](README.md#export-formats).
 
 ## Android
 
