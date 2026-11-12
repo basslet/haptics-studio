@@ -14,5 +14,5 @@
 | Resources' Android entry does not say whether the Haptics SDK supports PWLE; no SDK branch has that work yet. | `docs/design-and-integration/resources.md` | When PWLE support reaches the SDK's `main` |
 | The SDK README lists the FMOD, Wwise, Unity and Unreal documentation itself instead of linking to Studio's Resources page, and its Wwise link is a different manual version. | `basslet/haptics-sdk` `README.md`, Industry Adoption section | The next edit of the SDK README |
 
-| The README's header image (the bird icon beside the name "Haptics Studio") and the editor animation are placeholders. | `README.md` | When the images are made |
+| The README's header image (the bird icon beside the name "Haptics Studio") is a placeholder, and its editor animation `assets/editor-overview.gif` is Meta's, taken from Meta's Haptics Studio page. | `README.md`, `assets/editor-overview.gif` | Replace both with this project's own images before the repository opens |
 | The README's "Help, I'm New to Haptics" section links no in-depth guides yet. | `README.md` | When Haptics Studio Examples has its in-depth guides, such as accessibility |
