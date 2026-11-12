@@ -23,7 +23,7 @@ Haptics documentation from the makers of each platform and tool. Which export fo
 
 ## PlayStation
 
-Sony's documentation for DualSense haptics is open only to registered PlayStation partners. Haptics Studio exports rendered audio (PCM) that DualSense can play; it cannot audition on PlayStation.
+Sony's documentation for DualSense haptics is open only to registered PlayStation partners. DualSense haptics take PCM audio, and Haptics Studio exports rendered audio (`.wav`). That export is rendered through the Meta Quest Pro actuator profile and has not been tested on a DualSense. Haptics Studio cannot audition on PlayStation.
 
 ## Unity
 
