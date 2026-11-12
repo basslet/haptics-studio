@@ -1,6 +1,6 @@
 | | |
 | :--- | :--- |
-| **Haptics Studio** | **▸ Getting Started** · [Design & Integration](docs/design-and-integration.md) · [Architecture](docs/architecture.md) |
+| **Haptics Studio** | **▸ Overview** · [Design & Integration](docs/design-and-integration/README.md) · [Source Code](docs/building.md) · [Architecture](docs/architecture.md) |
 | **Haptics SDK** | [Overview](https://github.com/basslet/haptics-sdk) · [Getting Started](https://github.com/basslet/haptics-sdk/blob/main/docs/getting-started.md) · [Documentation](https://github.com/basslet/haptics-sdk/blob/main/docs/README.md) |
 | **Haptics Studio Examples** | [Overview](https://github.com/basslet/haptics-studio-examples) · [Guidelines](https://github.com/basslet/haptics-studio-examples/blob/main/1%20Design%20Guidelines/README.md) · [Examples](https://github.com/basslet/haptics-studio-examples/blob/main/2%20Design%20Examples/README.md) · [Code](https://github.com/basslet/haptics-studio-examples/blob/main/3%20Integration%20%26%20Code%20Snippets/README.md) · [Knowledge](https://github.com/basslet/haptics-studio-examples/blob/main/4%20Knowledge%20Base/README.md) · [Skills](https://github.com/basslet/haptics-studio-examples/blob/main/5%20Skills/README.md) |
 | **General** | [Code of Conduct](CODE_OF_CONDUCT.md) · [Contributing](CONTRIBUTING.md) · [License](LICENSE) · [Security](SECURITY.md) |
@@ -40,14 +40,14 @@ Haptics Studio is built for macOS and Windows. Minimum versions will be listed h
 
 Ready-to-install versions are not available yet. They will appear on the [Releases](https://github.com/basslet/haptics-studio/releases) page.
 
-Previewing on a headset or phone needs a companion app; see [Companion apps](docs/design-and-integration.md#companion-apps).
+Previewing on a headset or phone needs a companion app; see [Companion apps](docs/design-and-integration/README.md#companion-apps).
 
 ## First Steps
 
 1.  Add a clip from an audio file (`.wav`, `.mp3`, `.ogg`, `.aiff` or `.aif`). Haptics Studio analyzes it and generates a haptic clip.
 2.  Fine-tune the clip in the envelope editor.
 3.  Preview it on a device through a companion app.
-4.  Export it. [Design & Integration](docs/design-and-integration.md) explains the formats and what to do next.
+4.  Export it. [Design & Integration](docs/design-and-integration/README.md) explains the formats and what to do next.
 
 ## Privacy
 

@@ -1,11 +1,13 @@
 | | |
 | :--- | :--- |
-| **Haptics Studio** | **▸ Getting Started** · [Design & Integration](design-and-integration.md) · [Architecture](architecture.md) |
+| **Haptics Studio** | [Overview](../README.md) · [Design & Integration](design-and-integration/README.md) · **▸ Source Code** · [Architecture](architecture.md) |
 | **Haptics SDK** | [Overview](https://github.com/basslet/haptics-sdk) · [Getting Started](https://github.com/basslet/haptics-sdk/blob/main/docs/getting-started.md) · [Documentation](https://github.com/basslet/haptics-sdk/blob/main/docs/README.md) |
 | **Haptics Studio Examples** | [Overview](https://github.com/basslet/haptics-studio-examples) · [Guidelines](https://github.com/basslet/haptics-studio-examples/blob/main/1%20Design%20Guidelines/README.md) · [Examples](https://github.com/basslet/haptics-studio-examples/blob/main/2%20Design%20Examples/README.md) · [Code](https://github.com/basslet/haptics-studio-examples/blob/main/3%20Integration%20%26%20Code%20Snippets/README.md) · [Knowledge](https://github.com/basslet/haptics-studio-examples/blob/main/4%20Knowledge%20Base/README.md) · [Skills](https://github.com/basslet/haptics-studio-examples/blob/main/5%20Skills/README.md) |
 | **General** | [Code of Conduct](../CODE_OF_CONDUCT.md) · [Contributing](../CONTRIBUTING.md) · [License](../LICENSE) · [Security](../SECURITY.md) |
 
-# Building Haptics Studio
+# Source Code
+
+How to build, run and test Haptics Studio from source, and where to start when you change it. How the parts fit together is in [Architecture](architecture.md); where the app stores its data is in [Application Data](../main/README.md#application-data), and the project and clip formats are in [Core Data Models](../shared/README.md#core-data-models).
 
 ## Setup
 
@@ -135,3 +137,47 @@ yarn test:e2e:prepare:mac   # or test:e2e:prepare:win
 yarn test:e2e
 
 ```
+
+## Extending Studio
+
+We welcome contributions\! Here's where to look depending on what you'd like to do:
+
+### Add a New UI Feature
+
+The frontend lives in `frontend/src/`. Start with the relevant component directory:
+
+| Area                       | Directory                       | Key files                                                  |
+| :------------------------: | :-----------------------------: | :--------------------------------------------------------: |
+| Envelope editor            | `components/editor/envelope/`   | `HapticEnvelope.tsx`, `AudioEnvelope.tsx`, `PlotArea.tsx`  |
+| Clip list / navigator      | `components/editor/leftpanel/`  | `LeftPanel.tsx`, `Navigator.tsx`, `NavigatorClip.tsx`      |
+| Analysis & design controls | `components/editor/rightpanel/` | `RightPanel.tsx`, `AudioAnalyzer.tsx`, `DetailEditing.tsx` |
+| Timeline                   | `components/editor/timeline/`   | `Timeline.tsx`, `TimelinePlot.tsx`                         |
+| Home screen                | `components/home/`              | `Landing.tsx`                                              |
+| Redux state                | `state/`                        | `store.ts`, `reducers.ts`, `selectors.ts`, `actions.ts`    |
+| Custom hooks               | `hooks/`                        | 22 hooks for editor interactions, audio playback, etc.     |
+
+### Add a New Export Format
+
+1.  Define the format in `shared/ipc-types.ts` — add to the `ExportFormat` union type.
+2.  Implement the export logic in `main/src/common/utils/export.ts`.
+3.  Wire up the IPC handler in `main/src/listeners/clips/clipExport.ts`.
+4.  Add UI controls in `frontend/src/components/common/ExportDialog.tsx`.
+
+### Support a New Platform for Playback
+
+Runtime playback on new platforms is best handled in the Haptics SDK repository (<https://github.com/basslet/haptics-sdk>), not in Haptics Studio. The SDK is responsible for loading `.haptic` files and rendering them through each platform's native haptic API.
+
+If you need to add a new rendering target for preview within Studio (e.g., a new actuator profile), add an `.acf` file to `main/actuators/` and a render settings entry in `main/renderers/`.
+
+### Add a New Companion App
+
+The companion app protocol is documented in [companion/README.md](../companion/README.md). To build a new companion app for a different platform:
+
+1.  Implement UDP broadcast listening on port 9998 to discover desktop instances.
+2.  Connect via Socket.IO to the discovered host on port 9999 with query params: `deviceId`, `name`, `model`, `version`.
+3.  Handle the pairing flow (`auth_required` → `auth_request` → `auth_granted`).
+4.  Listen for `clip_update` and `current_project` events to receive haptic data.
+5.  Request specific formats via `get_ahap`, `get_android`, or `get_clip` depending on your platform.
+6.  Use the Haptics SDK (or platform-native APIs) to play the received haptic data.
+
+The VR companion app (`companion/quest/`) and mobile examples (`companion/ios/`, `companion/android/`) are good references.
