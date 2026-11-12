@@ -42,15 +42,15 @@ A suite of a desktop application and companion apps for designing and managing a
 
 ![The Haptics Studio editor](assets/editor-overview.gif)
 
-*One workspace* for your entire haptics process: design from scratch, or turn your audio assets into haptics for fast, expressive effects and intuitive UI feedback.
+**One workspace** for your entire haptics process: design from scratch, or turn your audio assets into haptics for fast, expressive effects and intuitive UI feedback.
 
-*Audition haptics* in real time on iOS, Android and Meta Quest devices for rapid design and iteration.
+**Audition haptics** in real time on iOS, Android and Meta Quest devices for rapid design and iteration.
 
-*Author once, play on many platforms.* Export to `.haptic` (universal JSON format), `.ahap` (Apple Core Haptics), Android haptic arrays and `.wav` rendered audio.
+**Author once, play on many platforms.** Export to `.haptic` (universal JSON format), `.ahap` (Apple Core Haptics), Android haptic arrays and `.wav` rendered audio.
 
-*Manage complex projects* with batch import and export. Organize clips into groups, add markers and notes, and save everything as a `.hasp` project file.
+**Manage complex projects** with batch import and export. Organize clips into groups, add markers and notes, and save everything as a `.hasp` project file.
 
-*Build like a pro* with the included examples, guided tutorials and haptic packs built by experts.
+**Build like a pro** with the included examples, guided tutorials and haptic packs built by experts.
 
 ## Download
 
@@ -60,7 +60,7 @@ Haptics Studio is built for macOS and Windows. Minimum versions will be listed h
 
 Previewing on a headset or phone needs a companion app; see [Companion apps](docs/design-and-integration/README.md#companion-apps).
 
-## First Step... help! I'm new to haptics
+## First Steps... help! I'm new to haptics
 
 - [Design & Integration](docs/design-and-integration/README.md): get started, learn the editor, and basic design and integration tips.
 - [Architecture](docs/architecture.md): the technology stack and the data architecture.
