@@ -1,0 +1,14 @@
+# Expectations
+
+| Claim | Disproved by | Where to look |
+|---|---|---|
+| Meta's published Quest app pairs with a build of this source and plays a clip. | A failed pairing. | A Quest headset and a built app |
+| USB preview works for Quest with no network. | No connection. | A Quest headset over USB, network off |
+| `SECURITY.md` lists every destination a running build contacts, on macOS and Windows, including whether the Windows spell-check dictionary download happens. | A traffic capture showing another host. | Traffic capture of a running build on each platform |
+| The Report a vulnerability button appears once the repository is public and the feature is on. | The command in the next column not showing enabled. | `gh api repos/basslet/haptics-studio/private-vulnerability-reporting` |
+| Every link in the navigation block to the SDK and Examples opens for a reader who is not signed in. | A 404 for any of them. | Each URL in `scripts/doc_nav.js`, opened signed out once the three repositories are public |
+| Every link on the Resources page opens the documentation it names. Checked by research on 2026-11-12, except the FMOD anchor `#haptics-instrument` and the Wwise page, which did not load for it. The PlayStation entry says Sony publishes no public DualSense haptics documentation. The lint does not open web links. | A dead link, or a page about something else. | Open each link in `docs/design-and-integration/resources.md`. |
+| A `.wav` export from Haptics Studio plays as haptics on a DualSense controller and feels like the clip, although it renders through the only actuator profile, `meta_quest_pro`. `docs/design-and-integration/resources.md` says it is untested. | No vibration, or a feel that does not match the clip. | A DualSense controller playing a `.wav` export through the platform's PCM haptics path |
+| A link to a component folder with an anchor, such as `../main#application-data` in `docs/building.md`, opens the folder on GitHub and scrolls to that heading of its README. | The page opens at the top of the folder, or as a missing page. | Open `docs/building.md` on GitHub and follow its Application Data link. |
+| The README banner shows `assets/logo-dark.png` in GitHub's dark theme and `assets/logo-light.png` in the light theme, 800 pixels wide. | Dark mode shows the light artwork or no image, light mode the dark artwork or no image, or a banner of another width. | The repository page on GitHub, in each theme |
+| A packaged build shows the bird, not the circle, as the app icon on macOS and Windows and as the icon of `.haptic` and `.hasp` files; the iOS companion app shows it on the home screen. Once #47 adds the Icon Composer file, the icon fills its tile on macOS 26 and later with no grey border. | The circle or a blank icon; after #47, a grey tile around the bird on macOS 26. | A packaged build on macOS and on Windows, and an iOS build on a phone |

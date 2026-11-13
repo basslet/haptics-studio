@@ -27,7 +27,7 @@
   },
   "bugreport": {
     "title": "Report a Bug",
-    "subtitle": "For support or feedback, please reach out using the <a href='https://github.com/facebook/haptics-studio/issues'>GitHub issues pages</a>. Feel free to attach logs and screenshot, but please only include information you are comfortable sharing with us.",
+    "subtitle": "For support or feedback, please reach out using the <a href='https://github.com/basslet/haptics-studio/issues'>GitHub issues pages</a>. Feel free to attach logs and screenshot, but please only include information you are comfortable sharing with us.",
     "template-subtitle": "To help us better understand your situation, please use this template to describe your request.",
     "template-body": "Version:\nHaptics Studio v%{version} (%{platform})\n\nCurrent situation:\nDescribe the problem you're facing.\n\nExpected behavior:\nInsert a description of what you would expect.",
     "copied": "Copied!"

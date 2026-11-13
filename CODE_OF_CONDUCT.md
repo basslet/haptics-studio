@@ -1,4 +1,13 @@
+| | |
+| :--- | :--- |
+| **Haptics Studio** | [Overview](README.md) · [Design & Integration](docs/design-and-integration/README.md) · [Source Code](docs/building.md) · [Architecture](docs/architecture.md) |
+| **Haptics SDK** | [Overview](https://github.com/basslet/haptics-sdk) · [Getting Started](https://github.com/basslet/haptics-sdk/blob/main/docs/getting-started.md) · [Documentation](https://github.com/basslet/haptics-sdk/blob/main/docs/README.md) |
+| **Haptics Studio Examples** | [Overview](https://github.com/basslet/haptics-studio-examples) · [Guidelines](https://github.com/basslet/haptics-studio-examples/blob/main/1%20Design%20Guidelines/README.md) · [Examples](https://github.com/basslet/haptics-studio-examples/blob/main/2%20Design%20Examples/README.md) · [Code](https://github.com/basslet/haptics-studio-examples/blob/main/3%20Integration%20%26%20Code%20Snippets/README.md) · [Knowledge](https://github.com/basslet/haptics-studio-examples/blob/main/4%20Knowledge%20Base/README.md) · [Skills](https://github.com/basslet/haptics-studio-examples/blob/main/5%20Skills/README.md) |
+| **General** | **▸ Code of Conduct** · [Contributing](CONTRIBUTING.md) · [License](LICENSE) · [Security](SECURITY.md) |
+
 # Code of Conduct
+
+This project follows a Code of Conduct adapted from the Contributor Covenant, version 1.4.
 
 ## Our Pledge
 
@@ -58,16 +67,9 @@ the project or its community.
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at <opensource-conduct@meta.com>. All
-complaints will be reviewed and investigated and will result in a response that
-is deemed necessary and appropriate to the circumstances. The project team is
-obligated to maintain confidentiality with regard to the reporter of an incident.
-Further details of specific enforcement policies may be posted separately.
+Abusive, harassing, or otherwise unacceptable behavior may be reported by contacting a maintainer on GitHub: [@basslet](https://github.com/basslet). GitHub has no private messages, so a report made there is public. Until a second maintainer is named, a report about that maintainer has no independent reviewer. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances.
 
-Project maintainers who do not follow or enforce the Code of Conduct in good
-faith may face temporary or permanent repercussions as determined by other
-members of the project's leadership.
+Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
 ## Attribution
 
