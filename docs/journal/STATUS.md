@@ -4,9 +4,10 @@ The documentation restructure is tracked in #5. Studio's pages are laid out (#38
 
 The bird replaces the circle mark (#45): the README banner and the icons that keep their file names (#46); pointing the apps at the new icon files is #47.
 
-## Before the Repository Opens
+## Open Now That the Repository Is Public
 
 - #25: harden companion device pairing.
+- #54: maintainer guidelines and repository settings; Dependabot security updates stay off until the alerts are reviewed.
 
 ## Waiting on People
 
