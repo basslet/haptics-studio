@@ -10,5 +10,5 @@ The bird replaces the circle mark (#45): the README banner and the icons that ke
 
 ## Waiting on People
 
-- #10: Meta's confirmation about adapting its documentation.
+- #10: a confirmation the Studio guide waits on.
 - #11: the name of the maintainer collective.
