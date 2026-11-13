@@ -126,7 +126,7 @@ yarn docs:lint            # Doc links and the navigation block on each page
 
 After adding a page, or an entry to the navigation block in `scripts/doc_nav.js`, run `node scripts/check_doc_links.js --fix`. It writes the block on every page. `scripts/doc_nav.js`, `scripts/check_doc_links.js` and their tests are the same files in Haptics Studio, the Haptics SDK and Haptics Studio Examples: copy a change to the other two, and `node scripts/doc_nav.js --compare` names each repository whose copy on `main` differs.
 
-The doc lint reads which repository it runs in from the `origin` remote's name. In a fork under another name, or a clone without an `origin`, set it (a correct `origin` still wins): `DOCS_REPO=haptics-studio yarn docs:lint`.
+The doc lint reads which repository it runs in from the `origin` remote's name. In a fork under another name, or a clone without an `origin`, set the environment variable `DOCS_REPO` to `haptics-studio` before `yarn docs:lint`; a correct `origin` still wins.
 
 ### Testing
 
