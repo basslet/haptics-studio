@@ -73,17 +73,17 @@ These are the rules the maintainers follow, so you know what happens to your iss
 ### Pull Requests
 
 - Every change reaches `main` through a pull request. Nobody pushes to `main` directly, maintainers included.
-- A pull request is merged when its checks pass, it does what its issue asked, and a maintainer has read the whole diff.
+- A pull request is merged when its checks pass, it does what its issue asks (for a small fix, what its description says), and a maintainer has read the whole diff.
 - For a contributor outside the project, a maintainer starts the checks by hand after reading the changes.
 - A maintainer reads any change to `.github/workflows/`, scripts, dependencies or build files line by line, because these run on the project's infrastructure.
 - Review comments say what must change and why. A pull request that waits on its author for 30 days is closed, and can be reopened.
-- Pull requests are squash-merged: one commit on `main` per pull request. Its message is the pull request's title and description, so write the description as the record of the change.
+- Pull requests are squash-merged by default: one commit on `main` per pull request. Its message starts as the pull request's title and description, so write the description as the record of the change.
 - A change that is bigger than its issue, or that mixes unrelated work, is split before it is merged.
 
 ### Security Reports
 
 - Reports go through the private channel in [SECURITY.md](SECURITY.md).
-- A maintainer confirms receipt, works on a fix in private, and publishes a security advisory together with the fix.
+- A maintainer confirms receipt and checks whether the report is a vulnerability in this project. A confirmed one is fixed in private and published as a security advisory together with the fix; any other report is closed with the reason.
 
 ### Code of Conduct Reports
 
