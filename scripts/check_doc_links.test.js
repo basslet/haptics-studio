@@ -20,7 +20,7 @@ const lint = (files, ...args) => {
   execFileSync('git', ['init', '-q'], { cwd: dir, env });
   execFileSync('git', ['add', '-A'], { cwd: dir, env });
   execFileSync('git', ['remote', 'add', 'origin', 'https://github.com/basslet/haptics-studio.git'], { cwd: dir, env });
-  const r = spawnSync('node', [script, dir, ...args], { encoding: 'utf8', env: { ...process.env, HOME: dir } });
+  const r = spawnSync('node', [script, dir, ...args], { encoding: 'utf8', env: { ...process.env, HOME: dir, DOCS_REPO: '' } });
   r.files = Object.fromEntries(Object.keys(files).map((f) => [f, fs.readFileSync(path.join(dir, f), 'utf8')]));
   fs.rmSync(dir, { recursive: true, force: true });
   return r;
