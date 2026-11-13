@@ -74,7 +74,7 @@ These are the rules the maintainers follow, so you know what happens to your iss
 
 - Every change reaches `main` through a pull request. Nobody pushes to `main` directly, maintainers included.
 - A pull request is merged when its checks pass, it does what its issue asked, and a maintainer has read the whole diff.
-- For a first-time contributor, a maintainer starts the checks by hand after reading the changes.
+- For a contributor outside the project, a maintainer starts the checks by hand after reading the changes.
 - A maintainer reads any change to `.github/workflows/`, scripts, dependencies or build files line by line, because these run on the project's infrastructure.
 - Review comments say what must change and why. A pull request that waits on its author for 30 days is closed, and can be reopened.
 - Pull requests are squash-merged: one commit on `main` per pull request. Its message is the pull request's title and description, so write the description as the record of the change.
@@ -88,11 +88,11 @@ These are the rules the maintainers follow, so you know what happens to your iss
 ### Code of Conduct Reports
 
 - Reports go to the contact in the [Code of Conduct](CODE_OF_CONDUCT.md).
-- The maintainer who handles a report does not discuss it in public and does not handle a report about themselves.
+- A maintainer does not discuss a report in public and does not handle a report about themselves. Until a second maintainer is named, a report about the maintainer has no independent reviewer, as the Code of Conduct says.
 
 ### Becoming a Maintainer
 
-The project is looking for maintainers. Contributors whose pull requests have been merged and who review others' work may be invited. A maintainer can merge, labels and closes issues, and follows the rules on this page.
+The project is looking for maintainers. Contributors whose pull requests have been merged and who review others' work may be invited. A maintainer can merge, label and close issues, and follows the rules on this page.
 
 ## Security
 
