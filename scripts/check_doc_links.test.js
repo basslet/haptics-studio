@@ -136,7 +136,7 @@ test('stops with one line when the origin is not one of the three repositories',
   assert.doesNotMatch(fork.stderr, /SE|RET/);
 });
 
-test('DOCS_REPO names the repository of a fork under another name', () => {
+test('DOCS_REPO names the repository of a fork under another name, and only then', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'doclinks-'));
   const env = { ...process.env, HOME: dir };
   execFileSync('git', ['init', '-q'], { cwd: dir, env });
@@ -144,8 +144,14 @@ test('DOCS_REPO names the repository of a fork under another name', () => {
   const run = (repo) => spawnSync('node', [script, dir], { encoding: 'utf8', env: { ...env, DOCS_REPO: repo } });
   const named = run('Haptics-Studio');
   const wrong = run('my-studio');
+  fs.writeFileSync(path.join(dir, 'README.md'), page('README.md', 'Body.'));
+  execFileSync('git', ['add', '-A'], { cwd: dir, env });
+  execFileSync('git', ['remote', 'set-url', 'origin', 'https://github.com/basslet/haptics-studio.git'], { cwd: dir, env });
+  const leftover = run('haptics-sdk');
   fs.rmSync(dir, { recursive: true, force: true });
   assert.strictEqual(named.status, 0, named.stderr);
   assert.strictEqual(wrong.status, 1);
   assert.match(wrong.stderr, /^DOCS_REPO "my-studio" is not haptics-studio, /);
+  // Studio's block passes; with DOCS_REPO winning, the page would get the SDK's block and fail.
+  assert.doesNotMatch(leftover.stderr, /navigation block/, 'an origin that names the repository wins over DOCS_REPO');
 });
