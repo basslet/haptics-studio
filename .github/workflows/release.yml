@@ -1,0 +1,126 @@
+name: Release
+
+# Builds the macOS app, the Windows installer and the Android APK, unsigned, and puts them on a
+# draft pre-release that a maintainer publishes. Start it by hand:
+#   gh workflow run release.yml --ref <branch> -f tag=v<version in package.json>
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag of the draft pre-release, "v" and the version in package.json
+        required: true
+  # GitHub starts a workflow file by hand only after it has run once on a branch, unless the file is
+  # on the default branch. This push run registers it and skips every job (#76).
+  push:
+    branches: ['integration/**']
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: The tag matches the version in package.json
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          version=$(jq -r .version package.json)
+          [ "$TAG" = "v$version" ] || { echo "::error::tag $TAG does not match v$version from package.json"; exit 1; }
+
+  mac:
+    needs: check
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: yarn
+      - uses: dtolnay/rust-toolchain@stable
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:mac
+      - run: yarn package:mac --publish never
+      - name: The app carries LICENSE
+        run: cmp LICENSE "dist/mac-universal/Haptics Studio.app/Contents/Resources/LICENSE"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: mac
+          path: dist/*.dmg
+          if-no-files-found: error
+
+  windows:
+    needs: check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: yarn
+      - uses: dtolnay/rust-toolchain@stable
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:win
+      - run: yarn package:win --publish never
+      - name: The installer carries LICENSE
+        run: cmp LICENSE dist/win-unpacked/resources/LICENSE
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows
+          path: dist/*.exe
+          if-no-files-found: error
+
+  android:
+    needs: check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: companion/android
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: ./gradlew assembleRelease -PversionCode=${{ github.run_number }}
+      - run: mv app/build/outputs/apk/release/*.apk haptics-studio-companion-android.apk
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android
+          path: companion/android/haptics-studio-companion-android.apk
+          if-no-files-found: error
+
+  draft:
+    needs: [mac, windows, android]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: assets
+          merge-multiple: true
+      - name: Create the draft pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release create "$TAG" assets/* --repo "$GITHUB_REPOSITORY" --draft --prerelease \
+            --target "$GITHUB_SHA" --title "Haptics Studio $TAG" \
+            --notes "Unsigned pre-release, built from $GITHUB_SHA by run $GITHUB_RUN_ID."

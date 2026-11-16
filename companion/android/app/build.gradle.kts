@@ -19,7 +19,8 @@ android {
     applicationId = "io.github.basslet.hapticsstudio.companion"
     minSdk = 31
     targetSdk = 35
-    versionCode = 1
+    // The release workflow passes its run number, so each release installs over the one before.
+    versionCode = project.findProperty("versionCode")?.toString()?.toInt() ?: 1
     versionName = "1.0.0"
   }
 
