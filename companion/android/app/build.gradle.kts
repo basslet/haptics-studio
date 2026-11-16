@@ -16,7 +16,7 @@ android {
   compileSdk = 35
 
   defaultConfig {
-    applicationId = "com.example.hapticsstudio"
+    applicationId = "io.github.basslet.hapticsstudio.companion"
     minSdk = 31
     targetSdk = 35
     versionCode = 1
