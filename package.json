@@ -181,6 +181,7 @@
     ],
     "extraResources": [
       "LICENSE",
+      "release-notes.md",
       {
         "from": "main/samples",
         "to": "./samples",

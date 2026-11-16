@@ -579,7 +579,7 @@ export default class MainApplication {
         onCheckForUpdates: () => Updater.instance.checkForUpdates(false),
         openExternal: (url: string) => shell.openExternal(url),
         getAppVersion: () => getAppVersion(),
-        getReleaseNotesPath: () => path.join(process.cwd(), 'release-notes.md'),
+        getReleaseNotesPath: () => PathManager.instance.getReleaseNotesPath(),
       },
       dataProviders: {
         getRecentProjects: () =>
