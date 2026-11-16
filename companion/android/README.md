@@ -86,8 +86,9 @@ local network, the sample enables cleartext traffic via
 
 ## Signing and Developer Verification
 
-The release workflow signs the APK it attaches to a release with the project's own key, which only
-the workflow reads, from repository secrets. An APK signed with another key cannot install over it.
+The release workflow signs the APK it attaches to a release with the project's own key. A separate
+job reads the key from repository secrets and signs the finished APK; the build never sees the key.
+An APK signed with another key cannot install over it.
 
 On certified Android devices, Google is phasing in developer verification: an app installed from
 outside an app store needs its package name and signing key registered by a verified developer.

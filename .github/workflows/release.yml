@@ -96,37 +96,56 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Write the signing key from the repository secret
-        env:
-          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-        run: |
-          [ -n "$KEYSTORE_BASE64" ] || { echo "::error::repository secret ANDROID_KEYSTORE_BASE64 is not set"; exit 1; }
-          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.p12"
       - run: ./gradlew assembleRelease -PversionCode=${{ github.run_number }}
-        env:
-          ANDROID_KEYSTORE_FILE: ${{ runner.temp }}/release.p12
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: release
       - name: The APK's versionCode is the run number
         run: jq -e '.elements[0].versionCode == ${{ github.run_number }}' app/build/outputs/apk/release/output-metadata.json
-      - run: mv app/build/outputs/apk/release/*.apk haptics-studio-companion-android.apk
+      - run: mv app/build/outputs/apk/release/app-release-unsigned.apk haptics-studio-companion-android-unsigned.apk
       - name: The APK carries LICENSE
-        run: unzip -p haptics-studio-companion-android.apk assets/LICENSE | cmp - ../../LICENSE
+        run: unzip -p haptics-studio-companion-android-unsigned.apk assets/LICENSE | cmp - ../../LICENSE
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android-unsigned
+          path: companion/android/haptics-studio-companion-android-unsigned.apk
+          if-no-files-found: error
+
+  # Signs on a fresh runner that runs no build code, so no Gradle plugin or dependency ever sees the key.
+  android-sign:
+    needs: android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: android-unsigned
+      - name: Sign the APK with the project's key from repository secrets
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          [ -n "$KEYSTORE_BASE64" ] || { echo "::error::repository secret ANDROID_KEYSTORE_BASE64 is not set"; exit 1; }
+          build_tools="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.p12"
+          "${build_tools}apksigner" sign --ks "$RUNNER_TEMP/release.p12" --ks-key-alias release \
+            --ks-pass env:KEYSTORE_PASSWORD --out haptics-studio-companion-android.apk haptics-studio-companion-android-unsigned.apk
+          rm "$RUNNER_TEMP/release.p12"
       # A different key would make the APK refuse to install over earlier ones, so the check names the project's key.
       - name: The APK is signed with the project's key
         run: |
           set -o pipefail
-          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner"
-          "$apksigner" verify --print-certs haptics-studio-companion-android.apk \
+          build_tools="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
+          "${build_tools}apksigner" verify --print-certs haptics-studio-companion-android.apk \
             | grep 'certificate SHA-256 digest: 8015be0cc3aca14ebfd4a765f3392b26e3ae66e1624ab59ba65825bec4053b94$'
+      - name: Native libraries stay aligned to 16 KB pages
+        run: |
+          build_tools="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
+          "${build_tools}zipalign" -c -P 16 4 haptics-studio-companion-android.apk
       - uses: actions/upload-artifact@v7
         with:
           name: android
-          path: companion/android/haptics-studio-companion-android.apk
+          path: haptics-studio-companion-android.apk
           if-no-files-found: error
 
   draft:
-    needs: [mac, windows, android]
+    needs: [mac, windows, android-sign]
     # A published tag never moves, so drafts come only from these branches; elsewhere the files stay on the run.
     if: github.ref == 'refs/heads/integration/release-builds' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -142,6 +161,6 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag }}
         run: |
-          gh release create "$TAG" assets/* --repo "$GITHUB_REPOSITORY" --draft --prerelease \
+          gh release create "$TAG" assets/*.dmg assets/*.exe assets/haptics-studio-companion-android.apk --repo "$GITHUB_REPOSITORY" --draft --prerelease \
             --target "$GITHUB_SHA" --title "Haptics Studio $TAG" \
             --notes "Unsigned pre-release, built from $GITHUB_SHA by run $GITHUB_RUN_ID."

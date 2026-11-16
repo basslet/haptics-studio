@@ -34,19 +34,8 @@ android {
     versionName = "1.0.0"
   }
 
-  // The release workflow passes the project's key from repository secrets; without it the release APK stays unsigned.
-  System.getenv("ANDROID_KEYSTORE_FILE")?.let { keystore ->
-    signingConfigs.create("release") {
-      storeFile = file(keystore)
-      storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
-      keyAlias = System.getenv("ANDROID_KEY_ALIAS")
-      keyPassword = storePassword // a PKCS12 keystore has one password for the store and its key
-    }
-  }
-
   buildTypes {
     release {
-      signingConfig = signingConfigs.findByName("release")
       isMinifyEnabled = false
       proguardFiles(
           getDefaultProguardFile("proguard-android-optimize.txt"),
