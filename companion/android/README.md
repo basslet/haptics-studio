@@ -52,8 +52,9 @@ platform and build tools it needs. Then, in `companion/android`:
 ./gradlew assembleRelease   # app/build/outputs/apk/release/app-release-unsigned.apk
 ```
 
-The debug APK is signed with the Android SDK's debug key. The release APK is unsigned, and Android
-installs only signed APKs, so put the debug APK on a phone.
+The debug APK is signed with the Android SDK's debug key. A release APK built this way is unsigned,
+and Android installs only signed APKs, so put the debug APK on a phone. The release workflow signs
+its APK with the project's key (see [Signing and Developer Verification](#signing-and-developer-verification)).
 
 ## How It Works
 
@@ -82,6 +83,21 @@ Discovery relies on receiving UDP broadcasts on the local network, which require
 Because the desktop connection is an unencrypted Socket.IO connection (`ws://<ip>:9999`) on the
 local network, the sample enables cleartext traffic via
 `res/xml/network_security_config.xml`.
+
+## Signing and Developer Verification
+
+The release workflow signs the APK it attaches to a release with the project's own key. A separate
+job reads the key from repository secrets and signs the finished APK; the build never sees the key.
+An APK signed with another key cannot install over it.
+
+On certified Android devices, Google is phasing in developer verification: an app installed from
+outside an app store needs its package name and signing key registered by a verified developer.
+Otherwise the user has to turn on Android's advanced flow, or install with `adb install`,
+which verification does not cover. As checked on 2026-11-16, Google enforces it only for installs
+from seven app stores in Brazil, Indonesia, Singapore and Thailand, and has announced it for all
+apps on certified devices in 2027 ([current status](https://developer.android.com/developer-verification)).
+The package name `io.github.basslet.hapticsstudio.companion` and the project's signing key are not
+registered yet.
 
 ## Protocol
 
