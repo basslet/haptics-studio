@@ -64,6 +64,14 @@ export default class PathManager {
   };
 
   /**
+   * @return { string } - Path to release-notes.md: the builds ship it in the resources directory
+   */
+  public getReleaseNotesPath = (): string =>
+    env === 'development'
+      ? path.join(process.cwd(), 'release-notes.md')
+      : path.join(this.getResourcesPath(), 'release-notes.md');
+
+  /**
    * Returns the path where user data are stored (logs, configs..)
    * @return { string } - Data path
    */

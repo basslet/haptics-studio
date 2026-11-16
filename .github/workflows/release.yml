@@ -51,8 +51,10 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build:mac
       - run: yarn package:mac --publish never
-      - name: The app carries LICENSE
-        run: cmp LICENSE "dist/mac-universal/Haptics Studio.app/Contents/Resources/LICENSE"
+      - name: The app carries LICENSE and release-notes.md
+        run: |
+          cmp LICENSE "dist/mac-universal/Haptics Studio.app/Contents/Resources/LICENSE"
+          cmp release-notes.md "dist/mac-universal/Haptics Studio.app/Contents/Resources/release-notes.md"
       - uses: actions/upload-artifact@v7
         with:
           name: mac
@@ -74,8 +76,10 @@ jobs:
       - run: yarn install --frozen-lockfile
       - run: yarn build:win
       - run: yarn package:win --publish never
-      - name: The installer carries LICENSE
-        run: cmp LICENSE dist/win-unpacked/resources/LICENSE
+      - name: The installer carries LICENSE and release-notes.md
+        run: |
+          cmp LICENSE dist/win-unpacked/resources/LICENSE
+          cmp release-notes.md dist/win-unpacked/resources/release-notes.md
       - uses: actions/upload-artifact@v7
         with:
           name: windows
