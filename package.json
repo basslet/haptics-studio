@@ -1,6 +1,6 @@
 {
   "name": "haptics-studio",
-  "version": "2.4.1",
+  "version": "2.5.0-beta.1",
   "description": "Haptics Studio",
   "main": "./dist/main.js",
   "scripts": {
@@ -82,17 +82,14 @@
   },
   "license": "SEE LICENSE IN LICENSE",
   "private": true,
-  "author": {
-    "name": "Meta Platforms, Inc.",
-    "url": "https://meta.com"
-  },
+  "author": "basslet",
   "build": {
-    "appId": "com.meta.HapticsStudio",
+    "appId": "io.github.basslet.hapticsstudio",
     "artifactName": "${name}-${os}-${arch}.${ext}",
     "asar": true,
     "asarUnpack": "**\\*.node",
     "productName": "Haptics Studio",
-    "copyright": "Copyright © 2026 ${author}",
+    "copyright": "Licensed under the MIT license. See LICENSE.",
     "generateUpdatesFilesForAllChannels": false,
     "mac": {
       "category": "public.app-category.developer-tools",
@@ -183,6 +180,8 @@
       }
     ],
     "extraResources": [
+      "LICENSE",
+      "release-notes.md",
       {
         "from": "main/samples",
         "to": "./samples",

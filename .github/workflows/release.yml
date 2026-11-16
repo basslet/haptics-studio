@@ -1,0 +1,166 @@
+name: Release
+
+# Builds the macOS app and the Windows installer, unsigned, and the Android APK, signed with the
+# project's key, and puts them on a draft pre-release that a maintainer publishes. Start it by hand:
+#   gh workflow run release.yml --ref <branch> -f tag=v<version in package.json>
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag of the draft pre-release, "v" and the version in package.json
+        required: true
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: The tag matches the version in package.json
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          version=$(jq -r .version package.json)
+          [ "$TAG" = "v$version" ] || { echo "::error::tag $TAG does not match v$version from package.json"; exit 1; }
+
+  mac:
+    needs: check
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:mac
+      - run: yarn package:mac --publish never
+      - name: The app carries LICENSE and release-notes.md
+        run: |
+          cmp LICENSE "dist/mac-universal/Haptics Studio.app/Contents/Resources/LICENSE"
+          cmp release-notes.md "dist/mac-universal/Haptics Studio.app/Contents/Resources/release-notes.md"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: mac
+          path: dist/*.dmg
+          if-no-files-found: error
+
+  windows:
+    needs: check
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          submodules: recursive
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: yarn
+      - run: yarn install --frozen-lockfile
+      - run: yarn build:win
+      - run: yarn package:win --publish never
+      - name: The installer carries LICENSE and release-notes.md
+        run: |
+          cmp LICENSE dist/win-unpacked/resources/LICENSE
+          cmp release-notes.md dist/win-unpacked/resources/release-notes.md
+      - uses: actions/upload-artifact@v7
+        with:
+          name: windows
+          path: dist/*.exe
+          if-no-files-found: error
+
+  android:
+    needs: check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: companion/android
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: ./gradlew assembleRelease -PversionCode=${{ github.run_number }}
+      - name: The APK's versionCode is the run number
+        run: jq -e '.elements[0].versionCode == ${{ github.run_number }}' app/build/outputs/apk/release/output-metadata.json
+      - run: mv app/build/outputs/apk/release/app-release-unsigned.apk haptics-studio-companion-android-unsigned.apk
+      - name: The APK carries LICENSE
+        run: unzip -p haptics-studio-companion-android-unsigned.apk assets/LICENSE | cmp - ../../LICENSE
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android-unsigned
+          path: companion/android/haptics-studio-companion-android-unsigned.apk
+          if-no-files-found: error
+
+  # Signs on a fresh runner that runs no build code, so no Gradle plugin or dependency ever sees the key.
+  android-sign:
+    needs: android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: android-unsigned
+      - name: Sign the APK with the project's key from repository secrets
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: |
+          [ -n "$KEYSTORE_BASE64" ] || { echo "::error::repository secret ANDROID_KEYSTORE_BASE64 is not set"; exit 1; }
+          [ -n "$KEYSTORE_PASSWORD" ] || { echo "::error::repository secret ANDROID_KEYSTORE_PASSWORD is not set"; exit 1; }
+          build_tools="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
+          trap 'rm -f "$RUNNER_TEMP/release.p12"' EXIT
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.p12"
+          "${build_tools}apksigner" sign --ks "$RUNNER_TEMP/release.p12" --ks-key-alias release \
+            --ks-pass env:KEYSTORE_PASSWORD --out haptics-studio-companion-android.apk haptics-studio-companion-android-unsigned.apk
+      # A different key would make the APK refuse to install over earlier ones, so the check names the project's key.
+      - name: The APK is signed with the project's key
+        run: |
+          set -o pipefail
+          build_tools="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
+          "${build_tools}apksigner" verify --print-certs haptics-studio-companion-android.apk \
+            | grep 'certificate SHA-256 digest: 8015be0cc3aca14ebfd4a765f3392b26e3ae66e1624ab59ba65825bec4053b94$'
+      - name: Native libraries stay aligned to 16 KB pages
+        run: |
+          build_tools="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
+          "${build_tools}zipalign" -c -P 16 4 haptics-studio-companion-android.apk
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android
+          path: haptics-studio-companion-android.apk
+          if-no-files-found: error
+
+  draft:
+    needs: [mac, windows, android-sign]
+    # A published tag never moves, so drafts come only from main; elsewhere the files stay on the run.
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: assets
+          merge-multiple: true
+      - name: Create the draft pre-release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release create "$TAG" assets/*.dmg assets/*.exe assets/haptics-studio-companion-android.apk --repo "$GITHUB_REPOSITORY" --draft --prerelease \
+            --target "$GITHUB_SHA" --title "Haptics Studio $TAG" \
+            --notes "Pre-release, built from $GITHUB_SHA by run $GITHUB_RUN_ID. The macOS app and the Windows installer are unsigned; the Android APK is signed with the project's key."

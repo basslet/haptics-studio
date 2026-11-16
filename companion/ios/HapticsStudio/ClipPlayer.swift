@@ -10,7 +10,7 @@ import CoreHaptics
 import Foundation
 import os
 
-private let logger = Logger(subsystem: "com.example.HapticsStudio", category: "ClipPlayer")
+private let logger = Logger(subsystem: "io.github.basslet.hapticsstudio.companion", category: "ClipPlayer")
 
 struct AhapHaptic: Codable {
   var continuous: String

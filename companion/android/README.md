@@ -15,7 +15,8 @@ Studio. It is written in native Kotlin with Jetpack Compose.
 
 ## Requirements
 
-- Android Studio (Ladybug or later recommended)
+- Android Studio (Ladybug or later recommended), or JDK 17 and the Android SDK command-line tools
+  without Android Studio (see [Build from the Command Line](#build-from-the-command-line))
 - A physical Android 12+ (API 31) device — vibration/haptic feedback does **not** play on emulators
 - The desktop device and the Android device must be on the **same local network**
 
@@ -28,13 +29,32 @@ Studio. It is written in native Kotlin with Jetpack Compose.
    pairing code shown on the desktop to connect.
 5. Tap a clip to play its haptic on the device, synced with its audio.
 
-You can also build from the command line:
+## Build from the Command Line
+
+Android Studio is not needed. On a Mac with [Homebrew](https://brew.sh), install the JDK and the
+command-line tools once, and accept the Android SDK licenses:
 
 ```bash
-cd companion/android
-./gradlew assembleDebug      # build the debug APK
-./gradlew installDebug       # install onto a connected device
+brew install openjdk@17
+brew install --cask android-commandlinetools
+export JAVA_HOME="$(brew --prefix openjdk@17)"
+export ANDROID_HOME="$(brew --prefix)/share/android-commandlinetools"
+yes | sdkmanager --licenses
+sdkmanager "platform-tools"   # adb, to install on a phone
 ```
+
+In a new terminal, set `JAVA_HOME` and `ANDROID_HOME` again. The first build downloads the SDK
+platform and build tools it needs. Then, in `companion/android`:
+
+```bash
+./gradlew assembleDebug     # app/build/outputs/apk/debug/app-debug.apk
+./gradlew installDebug      # installs it on a phone connected over USB, with USB debugging on
+./gradlew assembleRelease   # app/build/outputs/apk/release/app-release-unsigned.apk
+```
+
+The debug APK is signed with the Android SDK's debug key. A release APK built this way is unsigned,
+and Android installs only signed APKs, so put the debug APK on a phone. The release workflow signs
+its APK with the project's key (see [Signing and Developer Verification](#signing-and-developer-verification)).
 
 ## How It Works
 
@@ -63,6 +83,21 @@ Discovery relies on receiving UDP broadcasts on the local network, which require
 Because the desktop connection is an unencrypted Socket.IO connection (`ws://<ip>:9999`) on the
 local network, the sample enables cleartext traffic via
 `res/xml/network_security_config.xml`.
+
+## Signing and Developer Verification
+
+The release workflow signs the APK it attaches to a release with the project's own key. A separate
+job reads the key from repository secrets and signs the finished APK; the build never sees the key.
+An APK signed with another key cannot install over it.
+
+On certified Android devices, Google is phasing in developer verification: an app installed from
+outside an app store needs its package name and signing key registered by a verified developer.
+Otherwise the user has to turn on Android's advanced flow, or install with `adb install`,
+which verification does not cover. As checked on 2026-11-16, Google enforces it only for installs
+from seven app stores in Brazil, Indonesia, Singapore and Thailand, and has announced it for all
+apps on certified devices in 2027 ([current status](https://developer.android.com/developer-verification)).
+The package name `io.github.basslet.hapticsstudio.companion` and the project's signing key are not
+registered yet.
 
 ## Protocol
 

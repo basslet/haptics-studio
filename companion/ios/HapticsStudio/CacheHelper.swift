@@ -8,7 +8,7 @@
 import Foundation
 import os
 
-private let logger = Logger(subsystem: "com.example.HapticsStudio", category: "CacheHelper")
+private let logger = Logger(subsystem: "io.github.basslet.hapticsstudio.companion", category: "CacheHelper")
 
 class CacheHelper {
   public static var cachePath: String {

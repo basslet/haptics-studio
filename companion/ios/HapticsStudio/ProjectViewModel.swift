@@ -11,7 +11,7 @@ import SocketIO
 import UIKit
 import os
 
-private let logger = Logger(subsystem: "com.example.HapticsStudio", category: "ProjectViewModel")
+private let logger = Logger(subsystem: "io.github.basslet.hapticsstudio.companion", category: "ProjectViewModel")
 
 struct Clip: Codable {
   var clipId: String
