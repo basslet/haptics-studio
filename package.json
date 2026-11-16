@@ -89,7 +89,7 @@
     "asar": true,
     "asarUnpack": "**\\*.node",
     "productName": "Haptics Studio",
-    "copyright": "Copyright (c) Meta Platforms, Inc. and affiliates. Modifications Copyright (c) 2026 basslet.",
+    "copyright": "Licensed under the MIT license. See LICENSE.",
     "generateUpdatesFilesForAllChannels": false,
     "mac": {
       "category": "public.app-category.developer-tools",
