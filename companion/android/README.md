@@ -52,8 +52,9 @@ platform and build tools it needs. Then, in `companion/android`:
 ./gradlew assembleRelease   # app/build/outputs/apk/release/app-release-unsigned.apk
 ```
 
-The debug APK is signed with the Android SDK's debug key. The release APK is unsigned, and Android
-installs only signed APKs, so put the debug APK on a phone.
+The debug APK is signed with the Android SDK's debug key. A release APK built this way is unsigned,
+and Android installs only signed APKs, so put the debug APK on a phone. The release workflow signs
+its APK with the project's key (see [Signing and Developer Verification](#signing-and-developer-verification)).
 
 ## How It Works
 
