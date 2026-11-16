@@ -110,6 +110,8 @@ jobs:
 
   draft:
     needs: [mac, windows, android]
+    # A published tag never moves, so drafts come only from these branches; elsewhere the files stay on the run.
+    if: github.ref == 'refs/heads/integration/release-builds' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
