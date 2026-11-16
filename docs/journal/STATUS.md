@@ -4,7 +4,7 @@ The documentation restructure is tracked in #5. Studio's pages are laid out (#38
 
 The bird replaces the circle mark (#45): the README banner and the icons that keep their file names (#46); pointing the apps at the new icon files is #47.
 
-Ready-to-install releases are a stream (#57). Its pull requests land on `integration/release-builds`, which #79 merges into `main`. The release workflow builds unsigned apps into a draft pre-release; the first pre-release, `v2.5.0-beta.1`, is #77.
+Ready-to-install releases are a stream (#57). Its pull requests land on `integration/release-builds`, which #79 merges into `main`. The release workflow builds the apps into a draft pre-release. The first pre-release, `v2.5.0-beta.1` (#77), is published: the macOS app and the Windows installer unsigned, the Android APK signed with the project's key. Merging into `main` (#79) is on hold.
 
 ## Open Now That the Repository Is Public
 
