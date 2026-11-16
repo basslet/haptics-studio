@@ -96,12 +96,26 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+      - name: Write the signing key from the repository secret
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          [ -n "$KEYSTORE_BASE64" ] || { echo "::error::repository secret ANDROID_KEYSTORE_BASE64 is not set"; exit 1; }
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.p12"
       - run: ./gradlew assembleRelease -PversionCode=${{ github.run_number }}
+        env:
+          ANDROID_KEYSTORE_FILE: ${{ runner.temp }}/release.p12
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: release
       - name: The APK's versionCode is the run number
         run: jq -e '.elements[0].versionCode == ${{ github.run_number }}' app/build/outputs/apk/release/output-metadata.json
       - run: mv app/build/outputs/apk/release/*.apk haptics-studio-companion-android.apk
       - name: The APK carries LICENSE
         run: unzip -p haptics-studio-companion-android.apk assets/LICENSE | cmp - ../../LICENSE
+      - name: The APK is signed
+        run: |
+          apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner"
+          "$apksigner" verify --print-certs haptics-studio-companion-android.apk
       - uses: actions/upload-artifact@v7
         with:
           name: android
