@@ -48,7 +48,6 @@ jobs:
         with:
           node-version: '24'
           cache: yarn
-      - uses: dtolnay/rust-toolchain@stable
       - run: yarn install --frozen-lockfile
       - run: yarn build:mac
       - run: yarn package:mac --publish never
@@ -72,7 +71,6 @@ jobs:
         with:
           node-version: '24'
           cache: yarn
-      - uses: dtolnay/rust-toolchain@stable
       - run: yarn install --frozen-lockfile
       - run: yarn build:win
       - run: yarn package:win --publish never
