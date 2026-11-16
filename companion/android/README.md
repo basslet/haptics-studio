@@ -15,7 +15,8 @@ Studio. It is written in native Kotlin with Jetpack Compose.
 
 ## Requirements
 
-- Android Studio (Ladybug or later recommended)
+- Android Studio (Ladybug or later recommended), or JDK 17 and the Android SDK command-line tools
+  without Android Studio (see [Build from the Command Line](#build-from-the-command-line))
 - A physical Android 12+ (API 31) device — vibration/haptic feedback does **not** play on emulators
 - The desktop device and the Android device must be on the **same local network**
 
@@ -28,13 +29,31 @@ Studio. It is written in native Kotlin with Jetpack Compose.
    pairing code shown on the desktop to connect.
 5. Tap a clip to play its haptic on the device, synced with its audio.
 
-You can also build from the command line:
+## Build from the Command Line
+
+Android Studio is not needed. On a Mac with [Homebrew](https://brew.sh), install the JDK and the
+command-line tools once, and accept the Android SDK licenses:
 
 ```bash
-cd companion/android
-./gradlew assembleDebug      # build the debug APK
-./gradlew installDebug       # install onto a connected device
+brew install openjdk@17
+brew install --cask android-commandlinetools
+export JAVA_HOME="$(brew --prefix openjdk@17)"
+export ANDROID_HOME="$(brew --prefix)/share/android-commandlinetools"
+yes | sdkmanager --licenses
+sdkmanager "platform-tools"   # adb, to install on a phone
 ```
+
+In a new terminal, set `JAVA_HOME` and `ANDROID_HOME` again. The first build downloads the SDK
+platform and build tools it needs. Then, in `companion/android`:
+
+```bash
+./gradlew assembleDebug     # app/build/outputs/apk/debug/app-debug.apk
+./gradlew installDebug      # installs it on a phone connected over USB, with USB debugging on
+./gradlew assembleRelease   # app/build/outputs/apk/release/app-release-unsigned.apk
+```
+
+The debug APK is signed with the Android SDK's debug key. The release APK is unsigned, and Android
+installs only signed APKs, so put the debug APK on a phone.
 
 ## How It Works
 
