@@ -1,7 +1,7 @@
 name: Release
 
-# Builds the macOS app, the Windows installer and the Android APK, unsigned, and puts them on a
-# draft pre-release that a maintainer publishes. Start it by hand:
+# Builds the macOS app and the Windows installer, unsigned, and the Android APK, signed with the
+# project's key, and puts them on a draft pre-release that a maintainer publishes. Start it by hand:
 #   gh workflow run release.yml --ref <branch> -f tag=v<version in package.json>
 on:
   workflow_dispatch:
@@ -9,10 +9,6 @@ on:
       tag:
         description: Tag of the draft pre-release, "v" and the version in package.json
         required: true
-  # GitHub starts a workflow file by hand only after it has run once on a branch, unless the file is
-  # on the default branch. This push run registers it and skips every job (#76).
-  push:
-    branches: ['integration/**']
 
 permissions:
   contents: read
@@ -23,7 +19,6 @@ defaults:
 
 jobs:
   check:
-    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -150,8 +145,8 @@ jobs:
 
   draft:
     needs: [mac, windows, android-sign]
-    # A published tag never moves, so drafts come only from these branches; elsewhere the files stay on the run.
-    if: github.ref == 'refs/heads/integration/release-builds' || github.ref == 'refs/heads/main'
+    # A published tag never moves, so drafts come only from main; elsewhere the files stay on the run.
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: write
