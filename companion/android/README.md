@@ -83,6 +83,20 @@ Because the desktop connection is an unencrypted Socket.IO connection (`ws://<ip
 local network, the sample enables cleartext traffic via
 `res/xml/network_security_config.xml`.
 
+## Signing and Developer Verification
+
+The release workflow signs the APK it attaches to a release with the project's own key, which only
+the workflow reads, from repository secrets. An APK signed with another key cannot install over it.
+
+On certified Android devices, Google is phasing in developer verification: an app installed from
+outside an app store needs its package name and signing key registered by a verified developer.
+Otherwise the user has to turn on Android's one-time advanced flow, or install with `adb install`,
+which verification does not cover. As checked on 2026-11-16, Google enforces it only for installs
+from seven app stores in Brazil, Indonesia, Singapore and Thailand, and has announced it for all
+apps on certified devices in 2027 ([current status](https://developer.android.com/developer-verification)).
+The package name `io.github.basslet.hapticsstudio.companion` and the project's signing key are not
+registered yet.
+
 ## Protocol
 
 The companion talks to the desktop over Socket.IO (v3-compatible) on `ws://<ip>:9999`, path `/ws`:
