@@ -97,6 +97,8 @@ jobs:
           distribution: temurin
           java-version: '17'
       - run: ./gradlew assembleRelease -PversionCode=${{ github.run_number }}
+      - name: The APK's versionCode is the run number
+        run: jq -e '.elements[0].versionCode == ${{ github.run_number }}' app/build/outputs/apk/release/output-metadata.json
       - run: mv app/build/outputs/apk/release/*.apk haptics-studio-companion-android.apk
       - name: The APK carries LICENSE
         run: unzip -p haptics-studio-companion-android.apk assets/LICENSE | cmp - ../../LICENSE
