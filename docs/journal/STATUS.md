@@ -4,6 +4,8 @@ The documentation restructure is tracked in #5. Studio's pages are laid out (#38
 
 The bird replaces the circle mark (#45): the README banner and the icons that keep their file names (#46); pointing the apps at the new icon files is #47.
 
+Ready-to-install releases are a stream (#57). Its pull requests land on `integration/release-builds`, which #79 merges into `main`. The release workflow builds unsigned apps into a draft pre-release; the first pre-release, `v2.5.0-beta.1`, is #77.
+
 ## Open Now That the Repository Is Public
 
 - #25: harden companion device pairing.
