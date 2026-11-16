@@ -121,6 +121,7 @@ jobs:
           KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: |
           [ -n "$KEYSTORE_BASE64" ] || { echo "::error::repository secret ANDROID_KEYSTORE_BASE64 is not set"; exit 1; }
+          [ -n "$KEYSTORE_PASSWORD" ] || { echo "::error::repository secret ANDROID_KEYSTORE_PASSWORD is not set"; exit 1; }
           build_tools="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)"
           trap 'rm -f "$RUNNER_TEMP/release.p12"' EXIT
           printf '%s' "$KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.p12"
