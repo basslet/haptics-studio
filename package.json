@@ -87,7 +87,7 @@
     "url": "https://meta.com"
   },
   "build": {
-    "appId": "com.meta.HapticsStudio",
+    "appId": "io.github.basslet.hapticsstudio",
     "artifactName": "${name}-${os}-${arch}.${ext}",
     "asar": true,
     "asarUnpack": "**\\*.node",

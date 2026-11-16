@@ -10,7 +10,7 @@ import Foundation
 import Network
 import os
 
-private let logger = Logger(subsystem: "com.example.HapticsStudio", category: "UDPListener")
+private let logger = Logger(subsystem: "io.github.basslet.hapticsstudio.companion", category: "UDPListener")
 
 nonisolated struct SocketEndpointMessage: Codable {
   var hostname: String
