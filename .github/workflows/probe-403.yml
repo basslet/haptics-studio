@@ -1,0 +1,23 @@
+name: Probe 403
+
+# Probe for #76: can this workflow's token create a draft release, with and without an open pull request on its branch?
+on:
+  workflow_dispatch:
+  push:
+    branches: [probe/76-403]
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - run: |
+          for tag in "probe-403-$GITHUB_RUN_ID" v2.5.0-beta.1; do
+            echo "== $tag"
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --draft --prerelease --target "$GITHUB_SHA" --notes "Probe for #76; deleted afterwards." && echo "CREATED $tag" || echo "REFUSED $tag"
+          done
