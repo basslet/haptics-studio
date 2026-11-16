@@ -187,7 +187,8 @@ const generateTypeScriptBindings = () => {
   const which = spawnSync(whichCmd, ['typeshare'], {stdio: 'pipe'});
   if (which.status !== 0) {
     console.log('typeshare not in PATH, installing via cargo...');
-    run('cargo', ['install', 'typeshare-cli']);
+    // A fixed version and its lockfile, so a new release of the crate never runs inside a release build.
+    run('cargo', ['install', 'typeshare-cli', '--version', '1.13.4', '--locked']);
   }
 
   run('typeshare', typeshareArgs, {cwd: HAPTIC_SDK_WORKSPACE});
