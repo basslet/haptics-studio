@@ -163,4 +163,4 @@ jobs:
         run: |
           gh release create "$TAG" assets/*.dmg assets/*.exe assets/haptics-studio-companion-android.apk --repo "$GITHUB_REPOSITORY" --draft --prerelease \
             --target "$GITHUB_SHA" --title "Haptics Studio $TAG" \
-            --notes "Unsigned pre-release, built from $GITHUB_SHA by run $GITHUB_RUN_ID."
+            --notes "Pre-release, built from $GITHUB_SHA by run $GITHUB_RUN_ID. The macOS app and the Windows installer are unsigned; the Android APK is signed with the project's key."
