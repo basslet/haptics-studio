@@ -115,6 +115,7 @@ jobs:
       # A different key would make the APK refuse to install over earlier ones, so the check names the project's key.
       - name: The APK is signed with the project's key
         run: |
+          set -o pipefail
           apksigner="$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner"
           "$apksigner" verify --print-certs haptics-studio-companion-android.apk \
             | grep 'certificate SHA-256 digest: 8015be0cc3aca14ebfd4a765f3392b26e3ae66e1624ab59ba65825bec4053b94$'

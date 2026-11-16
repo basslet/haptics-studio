@@ -91,7 +91,7 @@ the workflow reads, from repository secrets. An APK signed with another key cann
 
 On certified Android devices, Google is phasing in developer verification: an app installed from
 outside an app store needs its package name and signing key registered by a verified developer.
-Otherwise the user has to turn on Android's one-time advanced flow, or install with `adb install`,
+Otherwise the user has to turn on Android's advanced flow, or install with `adb install`,
 which verification does not cover. As checked on 2026-11-16, Google enforces it only for installs
 from seven app stores in Brazil, Indonesia, Singapore and Thailand, and has announced it for all
 apps on certified devices in 2027 ([current status](https://developer.android.com/developer-verification)).
